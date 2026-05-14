@@ -20,7 +20,8 @@ test-first** multi-agent workflow. These rules are enforced by hooks in
 
 1. `/bootstrap` interviews the user, populates the `wiki/` starter pages, scaffolds the
    chosen stack, and hands off to the `manager` agent.
-2. `manager` reads the wiki + `wiki/backlog.md`, presents an ordered work plan for
+2. `manager` reads the wiki + `wiki/backlog.md`, commits the bootstrap baseline (the
+   scaffold + populated wiki) on its first run, presents an ordered work plan for
    approval, then for each item runs the pipeline:
    `spec-writer` → `test-writer` → `implementer` → `reviewer`.
 3. **Tests are always written first.** `test-writer` writes failing tests from the spec

@@ -63,9 +63,13 @@ can add any pages they like. Do not proceed until they confirm.
 
 ## Phase 4 — Hand off to the manager
 
+Do **not** commit the scaffold yourself — leave the wiki + scaffolding as uncommitted
+changes. The manager commits them as the project baseline on its first run.
+
 Spawn the `manager` agent via the `Task` tool. Tell it: the wiki is populated, read
-`wiki/INDEX.md` + `wiki/backlog.md`, and produce the initial ordered work plan for the
-user's approval (it will return for that approval — that is expected).
+`wiki/INDEX.md` + `wiki/backlog.md`, commit the bootstrap baseline, and produce the
+initial ordered work plan for the user's approval (it will return for that approval —
+that is expected).
 
 From here the manager drives. The top-level session only relays review checkpoints and
 escalations.

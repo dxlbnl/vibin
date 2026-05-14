@@ -28,11 +28,15 @@ from those two files and continue — never assume a fresh start.
 On the first run for a project (backlog has unstarted items and `progress.md` is empty
 or only has bootstrap notes):
 
-1. Build an **ordered work plan**: the backlog items in the order you will tackle them,
+1. **Commit the bootstrap baseline.** Bootstrap scaffolds the stack and populates the
+   wiki but does not commit. If the working tree has uncommitted changes, stage and
+   commit them as the project baseline (e.g. `chore: scaffold <project> (bootstrap)`)
+   so feature commits start from a clean tree. Never push.
+2. Build an **ordered work plan**: the backlog items in the order you will tackle them,
    each with a one-line approach and a note of which need specialists.
-2. **Auto-flag** items as `review` in `wiki/backlog.md` if they are risky, ambiguous, or
+3. **Auto-flag** items as `review` in `wiki/backlog.md` if they are risky, ambiguous, or
    architecturally significant. Items the user already flagged stay flagged.
-3. **Return to the top-level session** with the work plan and stop. Do not start
+4. **Return to the top-level session** with the work plan and stop. Do not start
    building. The top-level session presents it to the user for approval; you will be
    re-invoked once approved (you are resumable — see above).
 
@@ -79,8 +83,10 @@ hit a review checkpoint, or you escalate.
 
 ## Commits
 
-One commit per completed item, after green + review. Stage the item's files and commit
-with a message referencing the backlog item (e.g. `B3: add user login`). **Never push.**
+The **bootstrap baseline** is committed once, on your first run (see above). After that,
+**one commit per completed item**, after green + review: stage the item's files and
+commit with a message referencing the backlog item (e.g. `B3: add user login`).
+**Never push.**
 
 ## Escalation
 
