@@ -5,7 +5,7 @@ Every agent reads this page first, before doing anything else.
 
 ## How the workflow uses this wiki
 
-- The `manager` agent reads `backlog.md` to decide what to build next.
+- The `manager` reads `backlog.md` to decide what to build next.
 - `spec-writer` turns a backlog item into a detailed, testable page under `specs/`.
 - `test-writer` writes failing tests from that spec page; `implementer` makes them pass;
   `reviewer` verifies the result against this wiki.

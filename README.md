@@ -6,9 +6,10 @@ builds your project from the wiki.
 
 ## How it works
 
-The `wiki/` directory is the **single source of truth** — the wiki *is* the spec. A
-`manager` agent reads the wiki, decides what to build, and orchestrates a pipeline of
-specialized agents. Tests are written before implementation, always.
+The `wiki/` directory is the **single source of truth** — the wiki *is* the spec. The
+top-level session runs a `manager` skill that reads the wiki, decides what to build, and
+orchestrates a pipeline of specialized subagents. Tests are written before
+implementation, always.
 
 ```
 /bootstrap  →  wiki/ populated  →  manager  →  per backlog item:
@@ -38,11 +39,15 @@ By default the manager runs **until blocked**. You're pulled in for:
 
 Everything else runs hands-off.
 
-## The agents
+## The manager and the agents
+
+The **`manager`** is a *skill* the top-level session runs — not a subagent. It orders
+the work, orchestrates the pipeline, commits, and never writes product code itself.
+Orchestration has to live at the top level because only the top-level session can spawn
+subagents. The manager delegates to four pipeline **subagents**:
 
 | Agent | Role |
 |-------|------|
-| `manager` | Reads the wiki, orders the work, orchestrates the pipeline, commits, never writes product code. |
 | `spec-writer` | Turns a backlog item into a testable spec page in `wiki/specs/`. |
 | `test-writer` | Writes failing tests from the spec (tests first). |
 | `implementer` | Writes the minimum code to make tests pass. |

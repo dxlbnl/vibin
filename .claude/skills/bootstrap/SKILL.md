@@ -1,6 +1,6 @@
 ---
 name: bootstrap
-description: Primary entry point for a freshly cloned Vibin seed repo. Interviews the user about the project, stack, constraints, and initial backlog, populates the wiki/ starter pages, scaffolds the chosen stack, and hands off to the manager agent. Use when starting a new project, or when the user says "bootstrap", "set up the project", or "let's begin".
+description: Primary entry point for a freshly cloned Vibin seed repo. Interviews the user about the project, stack, constraints, and initial backlog, populates the wiki/ starter pages, scaffolds the chosen stack, and hands off to the manager skill. Use when starting a new project, or when the user says "bootstrap", "set up the project", or "let's begin".
 disable-model-invocation: false
 ---
 
@@ -66,10 +66,11 @@ can add any pages they like. Do not proceed until they confirm.
 Do **not** commit the scaffold yourself — leave the wiki + scaffolding as uncommitted
 changes. The manager commits them as the project baseline on its first run.
 
-Spawn the `manager` agent via the `Task` tool. Tell it: the wiki is populated, read
-`wiki/INDEX.md` + `wiki/backlog.md`, commit the bootstrap baseline, and produce the
-initial ordered work plan for the user's approval (it will return for that approval —
-that is expected).
+Hand off by invoking the **`manager` skill** in this same top-level session — do **not**
+spawn it as a subagent. Orchestration must run at the top level because only the
+top-level session can spawn the pipeline subagents; a manager subagent would dead-end
+the moment it tried to delegate.
 
-From here the manager drives. The top-level session only relays review checkpoints and
-escalations.
+The `manager` skill reads `wiki/INDEX.md` + `wiki/backlog.md`, commits the bootstrap
+baseline, and produces the initial ordered work plan for the user's approval. From there
+the top-level session runs the manager role and drives the pipeline.
