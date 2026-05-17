@@ -1,36 +1,55 @@
 # Architecture
 
 > **Starter template.** `/bootstrap` fills this in from your answers. Edit freely.
-> This page drives the stack-agnostic scaffolding — be specific about the stack so the
-> agents can detect and use the right test runner.
+> This page drives the stack-agnostic scaffolding and is the source of truth for the
+> package manager / test runner / language toolchain that agents will use.
 
 ## Tech stack
 
-- **Language**: _…_
-- **Runtime / platform**: _…_
-- **Key frameworks / libraries**: _…_
+- **Language**: *Example: TypeScript 5.x*
+- **Runtime / platform**: *Example: Node 20 LTS, runs in the browser via Vite*
+- **Key frameworks / libraries**: *Example: React, Tailwind, Hono on the backend*
+
+## Package manager (binding)
+
+> Agents must use **only** this package manager. Do not substitute another even if
+> tutorials, generated configs, or model priors suggest one. If the project needs a
+> different one, change it here first and re-bootstrap.
+
+- **Package manager**: *Example: pnpm (use only this — not npm, not yarn)*
 
 ## Test setup
 
-- **Test runner**: _e.g. vitest, pytest, go test, cargo test_
-- **Test command**: _the exact command to run the full suite_
-- **Test file location / naming**: _e.g. `tests/`, `*_test.py`, `*.test.ts`_
+- **Test runner**: *Example: vitest*
+- **Test command**: *the exact command to run the full suite — Example: `pnpm test`*
+- **Test file location / naming**: *Example: co-located `*.test.ts` next to source*
 
-> `/bootstrap` records the test command in `.claude/settings.json` `permissions.allow`
-> so the agents can run tests without a prompt each time.
+> `/bootstrap` records the stack-specific package manager / runtime / test runner in
+> `.claude/settings.json` `permissions.allow` so the agents can run them without a
+> prompt each time. The seed itself ships only stack-agnostic permissions.
 
 ## Project structure
 
-_How the codebase is laid out at the repo root (this is a single-project-per-clone seed,
-so the project lives at the root)._
+How the codebase is laid out at the repo root (single project per clone — lives at
+the root).
 
 ```
-src/      _…_
-tests/    _…_
+src/        # application code
+tests/      # if not co-located
+```
+
+*Example:*
+
+```
+src/
+  components/   # React UI
+  server/       # Hono routes
+  lib/          # shared utilities
 ```
 
 ## Key technical decisions
 
-_Summarize here; the full rationale log is in `decisions.md`._
+Summarize here; the full rationale log is in `decisions.md`.
 
-- _…_
+- *Example: Use Hono over Express for typed routing and edge compatibility.*
+- *Example: Co-locate tests with source for fast navigation.*
