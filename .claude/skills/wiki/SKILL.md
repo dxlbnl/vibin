@@ -17,28 +17,45 @@ the wiki deliberately — see `/wiki-sync`).
 - `wiki/vision.md` — what the project is and why.
 - `wiki/requirements.md` — functional requirements, constraints, assumptions, open
   questions.
-- `wiki/architecture.md` — stack, test setup, project structure, key decisions.
-- `wiki/backlog.md` — prioritized work items.
+- `wiki/architecture.md` — stack, **binding package manager**, test setup, project
+  structure, key decisions.
+- `wiki/backlog/` — work items, one per file, arranged in four lanes:
+  `inbox/` → `ready/` → `doing/` → `done/`. See `wiki/backlog/README.md` for the
+  schema, lane semantics, and the per-`type:` track table.
 - `wiki/decisions.md` — append-only ADR-style decision log.
 - `wiki/progress.md` — append-only run journal kept by the manager.
-- `wiki/specs/` — one detailed, testable spec page per feature.
+- `wiki/specs/` — one detailed, testable spec page per feature/bug item, paired with
+  an item card via the card's `spec:` frontmatter.
 
 The wiki is **open-ended**. Only `INDEX.md` is structurally required — add, split, and
 restructure other pages freely.
 
 ## Conventions
 
-- **Adding a page** — create `wiki/<name>.md` (or `wiki/specs/<feature>.md`) and add a
-  row to the Pages table in `INDEX.md` so it is discoverable. An unlinked page is an
-  invisible page.
-- **Backlog items** — each has a status (`todo` / `in-progress` / `done`) and an
-  optional `review` flag (pause for user approval after the spec, before
-  implementation). The user flags items; the manager may auto-flag risky ones.
-- **Spec pages** — live in `wiki/specs/`, one per backlog item, following the format in
-  `wiki/specs/README.md`. Acceptance criteria must be **testable**.
-- **Decisions** — never edit a past entry in `decisions.md`; supersede it with a new
-  one. Any agent making a notable design/tech choice appends an entry.
-- **Progress** — the manager appends to `progress.md`; treat it as an audit log.
+- **Adding a page** — create `wiki/<name>.md` (or `wiki/specs/<feature>.md`) and add
+  a row to the Pages table in `INDEX.md` so it is discoverable. An unlinked page is
+  an invisible page.
+- **Backlog items** — each is its own file at `wiki/backlog/<lane>/B<n>-<slug>.md`.
+  Lane = directory (no `status:` field). Each item has a `type:`
+  (`feature`/`bug`/`research`/`chore`) which selects the manager's track, and an
+  optional `flags:` list (`review` to pause for approval; `blocked` if stuck, with
+  a one-line reason in `## Notes`). File new work with `/intake`. The manager moves
+  items between lanes via `git mv` — never copy-and-delete (the rename preserves
+  history).
+- **Spec pages** — live in `wiki/specs/`, one per feature/bug item, following the
+  format in `wiki/specs/README.md`. Acceptance criteria must be **testable**. The
+  spec page is linked from its item card via the `spec:` frontmatter.
+- **Decisions** — never edit a past entry in `decisions.md`; supersede it with a
+  new one. Any agent making a notable design/tech choice appends an entry.
+- **Progress** — the manager appends to `progress.md`; treat it as an audit log. Use
+  `/status` for a one-screen summary of where the pipeline is right now.
+
+## Package manager (binding)
+
+`wiki/architecture.md` declares **the** package manager for the project (e.g. pnpm
+for a TypeScript project, uv for Python). All agents use only that one — they do not
+substitute another even if generated configs or tutorials reference one. If the
+declaration is missing, agents stop and ask the user.
 
 ## After the wiki changes
 

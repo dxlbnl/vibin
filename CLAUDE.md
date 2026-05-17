@@ -6,11 +6,11 @@ by the agent and skill definitions in `.claude/agents/` and `.claude/skills/`.
 
 ## The wiki is the single source of truth
 
-- `wiki/` is the spec. There is no separate specs directory — detailed feature specs
-  live in `wiki/specs/` as wiki pages.
-- `wiki/INDEX.md` is the required entry point. **Every agent reads it first.** This is
-  enforced hard: a `PreToolUse` hook blocks writes, Bash, and agent spawns until the
-  current `wiki/INDEX.md` has been read in this session/agent.
+- `wiki/` is the spec. Detailed feature specs live in `wiki/specs/` as wiki pages —
+  there is no separate specs directory.
+- **Every agent reads `wiki/INDEX.md` first.** A `PreToolUse` hook enforces this so it
+  cannot be skipped; if the wiki has changed since you last read it, re-read the
+  affected pages before continuing.
 - The wiki is open-ended. Only `INDEX.md` is structurally required; add, split, and
   restructure other pages freely, and link them from `INDEX.md`.
 - When code diverges from the wiki, **update the wiki** (or run `/wiki-sync`). The
@@ -19,15 +19,22 @@ by the agent and skill definitions in `.claude/agents/` and `.claude/skills/`.
 ## Workflow
 
 1. `/bootstrap` interviews the user, populates the `wiki/` starter pages, scaffolds the
-   chosen stack, and hands off to the `manager` skill.
-2. The top-level session runs the `manager` skill: it reads the wiki + `wiki/backlog.md`,
-   commits the bootstrap baseline (the scaffold + populated wiki) on its first run,
-   presents an ordered work plan for approval, then for each item runs the pipeline:
-   `spec-writer` → `test-writer` → `implementer` → `reviewer`.
-3. **Tests are always written first.** `test-writer` writes failing tests from the spec
-   page and confirms red; `implementer` writes the minimum code to reach green.
+   chosen stack, writes the stack-specific permission profile into
+   `.claude/settings.json`, and hands off to the `manager` skill.
+2. The top-level session runs the `manager` skill: it reads the wiki + the items in
+   `wiki/backlog/{inbox,ready}/`, commits the bootstrap baseline (the scaffold +
+   populated wiki) on its first run, presents an ordered work plan for approval, then
+   for each item dispatches the right track based on the item's `type:`:
+   - `feature` → `spec-writer` → `test-writer` → `implementer` → `reviewer`
+   - `bug` → same as feature, plus a regression test for the reported failure
+   - `research` → `researcher` specialist → reviewer confirms findings
+   - `chore` → `implementer` → `reviewer` (no spec, no tests-first)
+3. **Tests are always written first** (for `feature` and `bug` items). `test-writer`
+   writes failing tests from the spec page and confirms red; `implementer` writes the
+   minimum code to reach green.
 4. An item is **done** when the reviewer passes AND the full test suite is green. The
-   manager commits one commit per completed item (no push) and loops.
+   manager `git mv`s the item file to `wiki/backlog/done/`, commits one commit per
+   completed item (no push), and loops.
 
 ## Operational rules
 
@@ -39,20 +46,51 @@ by the agent and skill definitions in `.claude/agents/` and `.claude/skills/`.
 - **Artifact handoff** — subagents do not share a conversation. They communicate only
   through repo + wiki artifacts. Delegation prompts must name the exact files to read
   and write.
+- **Triage** — any bug report, feature request, or change of direction surfaced
+  mid-run becomes a new item in `wiki/backlog/inbox/` via `/intake`. Never inline-patch
+  in response. The capturing agent files the item, tells the user, and continues the
+  current item. The only exception is a trivial typo/comment fix adjacent to the
+  current item, which is folded into the current item's commit.
+- **No ad-hoc `node`/`python` invocations** — agents must not run `node -e ...`,
+  `node <oneoff.js>`, `python -c ...`, `python <oneoff.py>`, or similar interpreter
+  scripts as ad-hoc investigation or probing tools. The right tool for each pattern:
+  - Searching or inspecting code → `Read` / `Grep` / `Glob` (not a node script).
+  - Inspecting data files (JSON, CSV, logs) → `Read` (and `jq` via Bash if needed).
+  - Probing an external API to check it works → describe the request (curl / fetch /
+    endpoint + body) and **ask the user** to run it.
+  - Verifying behaviour of the system being built → write a real test through the
+    `test-writer` / `implementer` flow, not a throwaway invocation.
+  - Mutating environment, CI, build, or local-tool configuration → describe the
+    change (file path + exact diff or shell command) and **ask the user** to apply it.
+    Committing a config *file* the project owns — `vite.config.ts`, `pyproject.toml`,
+    `Dockerfile`, a CI workflow yaml — is fine; that's product code.
+
+  **Exception**: project-owned commands (`pnpm run …`, `pytest`, `tsc --noEmit`,
+  `cargo test`, or a script the project has committed) are fine — those are the
+  project's normal operations, not ad-hoc agent work.
+- **Package manager** — always use the one declared in `wiki/architecture.md`. Do not
+  substitute another even if generated configs, READMEs, or model priors suggest one.
+  If the declaration is missing or ambiguous, defer to the user.
 - **Run until blocked** — the manager works through the backlog without per-item
-  check-ins, pausing only on a review checkpoint, an unresolved failure, or a reviewer
-  escalation.
+  check-ins, pausing only on one of three things:
+  1. A **review checkpoint** (the initial work plan, or any item flagged `review`).
+  2. An **unresolved failure** (retry budget exhausted — see below).
+  3. A **reviewer escalation** (second rejection on the same item).
 - **Review checkpoints** — the manager pauses and asks the user directly for approval
-  for: (1) the initial work plan, always; (2) any `wiki/backlog.md` item flagged
-  `review`. Items are flagged by the user or auto-flagged by the manager when
-  risky/ambiguous/architecturally significant. Unflagged items never pause.
-- **Retry / escalation** — `implementer` gets 3 attempts to reach green; then control
-  returns to the manager for one more routed attempt, then escalation to the user. A
-  `reviewer` rejection loops back to `implementer` once with the notes; a second
-  rejection escalates.
-- **Commits** — one commit per completed item, message references the backlog item.
-  Never push unless the user asks.
-- **Resumability** — the manager's durable state is `wiki/backlog.md` +
+  for: (1) the initial work plan, always; (2) any item flagged `review` in its card
+  frontmatter (`flags: [review]`). Items are flagged by the user or auto-flagged by the
+  manager when risky/ambiguous/architecturally significant. Unflagged items never pause.
+- **Retry / escalation** — `implementer` gets 3 attempts inside its own loop to reach
+  green. If still red, the manager routes the failure context back for one more
+  attempt (4th total), then escalates to the user. A `reviewer` rejection loops back to
+  `implementer` once with the review notes; a second rejection escalates.
+- **Resuming and unblocking** — to resume after a pause, run `/manager` (or `/status`
+  to inspect first). To skip an escalated item, edit its frontmatter to add
+  `flags: [blocked]` and a one-line reason in `## Notes`, then re-run `/manager`. To
+  cancel, `git mv` the item to `wiki/backlog/done/` and add `flags: [cancelled]`.
+- **Commits** — one commit per completed item, message references the backlog item id
+  (e.g. `B3: add user login`). Never push unless the user asks.
+- **Resumability** — the manager's durable state is `wiki/backlog/**` +
   `wiki/progress.md`. A fresh `/manager` invocation reads those and continues.
 - **Decision ownership** — any agent making a notable design/tech choice appends it to
   `wiki/decisions.md` (ADR-style); the manager logs orchestration decisions.

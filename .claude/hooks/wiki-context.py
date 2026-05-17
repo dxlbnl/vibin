@@ -26,8 +26,9 @@ def main():
             out.append(fh.read().rstrip())
     else:
         out.append(
-            "No wiki/INDEX.md yet. Run /bootstrap to interview the user and populate "
-            "the wiki before any build work."
+            "**No wiki yet — run `/bootstrap` to set up the project.** Bootstrap "
+            "interviews you, populates the wiki/ starter pages, scaffolds the chosen "
+            "stack, and hands off to the manager."
         )
 
     if os.path.isdir(wiki_dir):

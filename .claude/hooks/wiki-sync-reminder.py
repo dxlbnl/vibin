@@ -36,9 +36,8 @@ def main():
         sys.exit(0)
 
     reminder = (
-        f"Product code changed ({rel}). The wiki is the single source of truth — if "
-        f"this change makes behaviour diverge from the wiki, update the relevant "
-        f"wiki/ page (or run /wiki-sync) so the spec stays accurate."
+        f"Product code changed at {rel}. Check that the related wiki page is still "
+        f"accurate; update it (or run /wiki-sync) if not. The wiki is the spec."
     )
     print(
         json.dumps(

@@ -5,10 +5,12 @@ Every agent reads this page first, before doing anything else.
 
 ## How the workflow uses this wiki
 
-- The `manager` reads `backlog.md` to decide what to build next.
-- `spec-writer` turns a backlog item into a detailed, testable page under `specs/`.
-- `test-writer` writes failing tests from that spec page; `implementer` makes them pass;
-  `reviewer` verifies the result against this wiki.
+- The `manager` reads `backlog/` to decide what to build next, dispatching on each
+  item's `type:` (feature / bug / research / chore).
+- `spec-writer` turns a feature/bug backlog item into a testable spec page under
+  `specs/`.
+- `test-writer` writes failing tests from that spec page; `implementer` makes them
+  pass; `reviewer` verifies the result against this wiki.
 - When code and wiki disagree, the **wiki wins** — update the wiki (or run `/wiki-sync`).
 
 ## Pages
@@ -17,11 +19,11 @@ Every agent reads this page first, before doing anything else.
 |------|---------|
 | [vision.md](vision.md) | What the project is and why it exists. |
 | [requirements.md](requirements.md) | Functional requirements and constraints. |
-| [architecture.md](architecture.md) | Tech stack, structure, and key technical choices. |
-| [backlog.md](backlog.md) | Prioritized work items with status and `review` flags. |
+| [architecture.md](architecture.md) | Tech stack, package manager, test setup, structure. |
+| [backlog/](backlog/) | Work items, arranged in four lanes (inbox → ready → doing → done). See `backlog/README.md`. |
 | [decisions.md](decisions.md) | Append-only decision log (ADR-style). |
 | [progress.md](progress.md) | Append-only run journal — what the agents have done. |
-| [specs/](specs/) | One detailed spec page per feature. See `specs/README.md`. |
+| [specs/](specs/) | One detailed spec page per feature/bug. See `specs/README.md`. |
 
 > The wiki is **open-ended**. Only this `INDEX.md` is structurally required. Add, split,
 > and restructure pages as the project grows — just link new pages in the table above.
@@ -29,11 +31,14 @@ Every agent reads this page first, before doing anything else.
 ## Conventions
 
 - **Adding a page**: create `wiki/<name>.md` (or `wiki/specs/<feature>.md`) and add a row
-  to the Pages table above so it is discoverable.
-- **Backlog status**: each item in `backlog.md` is `todo` / `in-progress` / `done`, with
-  an optional `review` flag meaning "pause for user approval before implementing".
-- **Spec pages**: live in `specs/`, one per feature, named after the backlog item. They
-  must contain testable acceptance criteria — see `specs/README.md`.
+  to the Pages table above so it is discoverable. Unlinked pages are invisible.
+- **Backlog items**: live as per-item files under `wiki/backlog/<lane>/B<n>-<slug>.md`.
+  Lane = directory (no `status:` field). Each item has a `type:` (feature / bug /
+  research / chore) and an optional `flags:` list (`review` to pause for approval,
+  `blocked` if stuck). File new work with `/intake`; see `backlog/README.md`.
+- **Spec pages**: live in `specs/`, one per feature/bug, named after the backlog item
+  (e.g. `B3-user-login.md`). They must contain testable acceptance criteria — see
+  `specs/README.md`.
 - **Decisions**: when an agent makes a notable design/tech choice, it appends an entry to
   `decisions.md`.
 - **Progress**: the `manager` appends to `progress.md` as items move through the
