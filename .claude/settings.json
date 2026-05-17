@@ -50,13 +50,22 @@
   "permissions": {
     "allow": [
       "Bash(ls:*)",
-      "Bash(cat:*)",
       "Bash(pwd)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)",
+      "Bash(wc:*)",
       "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)"
+      "Bash(git mv:*)"
     ],
     "deny": []
   }
