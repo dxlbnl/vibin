@@ -151,6 +151,14 @@ frontend-dev, security-auditor, designer, …) ad hoc, or persist recurring ones
 - `.claude/hooks/wiki-sync-reminder.py` (`PostToolUse`) nudges to keep the wiki in
   sync when product code changes.
 
+## Upgrading an existing project
+
+Vibin is cloned per project, so seed improvements don't reach existing projects
+automatically. [`CHANGELOG.md`](CHANGELOG.md) records each seed change with an
+agent-actionable **Migration** section. To bring an older project up to date, ask Claude
+to *"apply the pending Vibin CHANGELOG migrations"* — it adopts the new tooling text and
+runs the content-aware wiki migrations in order, oldest first.
+
 ## Rolling back
 
 Each completed backlog item is exactly one commit, and its card lives in
