@@ -11,8 +11,11 @@ ones a project is missing. A project's current seed version is recorded in `.vib
 ## How to upgrade a project
 
 Ask Claude to **"migrate this project to the latest Vibin"** (or run `/migrate`). It reads
-`.vibin-version`, applies every newer migration in `migrations/` in order, bumps the
-version, and commits. See [`migrations/README.md`](migrations/README.md) for the mechanism.
+the seed commit hash in `.vibin-version`, diffs it against the latest Vibin on GitHub
+(`dxlbnl/vibin`), and applies the changes — adopting seed-owned files the project hasn't
+customized, reconciling ones it has (checking the load-bearing files like agents and hooks),
+following each affected migration's content-aware steps for the project's wiki, then updating
+`.vibin-version` and committing. See [`migrations/README.md`](migrations/README.md).
 
 ## Released versions
 

@@ -10,12 +10,17 @@ existing project. `CHANGELOG.md` (repo root) is the human-facing index of the sa
 
 ## Versioning
 
-- The repo root holds **`.vibin-version`** — a single integer: the id of the highest
-  migration applied to this project. A clone with no such file is treated as version `0`.
-- Each migration file is named `NNNN-<slug>.md` where `NNNN` is a zero-padded, monotonically
-  increasing id. The id in the filename is the version that file brings a project **to**.
-- `/migrate` applies every migration with `id > .vibin-version`, in ascending order, then
-  writes the new highest id back to `.vibin-version`.
+- The repo root holds **`.vibin-version`** — the **git commit hash** of the Vibin seed a
+  project is currently synced to. `/bootstrap` stamps it with the commit the project was
+  cloned from; `/migrate` updates it after a successful upgrade.
+- `/migrate` diffs that hash against the latest Vibin on GitHub (`dxlbnl/vibin`) and applies
+  the changes — adopting seed-owned files the project hasn't touched, reconciling ones it
+  has, and following the content-aware steps below for project wiki content. The git diff is
+  the source of truth for **what changed**; these migration files explain **why** and carry
+  the steps a raw diff can't express.
+- Each migration file is named `NNNN-<slug>.md` (a zero-padded, increasing id, purely for
+  human ordering) and records the `seed_commit` it shipped at, so `/migrate` can find the
+  ones whose changes fall in the range it is applying.
 
 > Note: migration ids and `docs/proposals/` ids are **independent sequences**. A proposal is
 > a design; a migration is a released change. They will usually not line up.

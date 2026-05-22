@@ -86,4 +86,3 @@ exact change.
   expect).
 - No lingering `## Key technical decisions` heading and no "notable design/tech choice"
   phrasing remain in `.claude/**` or `CLAUDE.md`.
-- `.vibin-version` reads `1`.

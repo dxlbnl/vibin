@@ -1,56 +1,88 @@
 ---
 name: migrate
-description: Bring an existing Vibin project up to date with the latest seed by applying pending migrations from migrations/. Use when the user says "migrate", "upgrade Vibin", "apply the latest seed changes", or after pulling a newer seed. Detects the project's version from .vibin-version and applies each newer migration in order.
+description: Bring an existing Vibin project up to date with the latest seed by diffing the project's recorded seed commit against the latest Vibin on GitHub and applying the changes. Use when the user says "migrate", "upgrade Vibin", "apply the latest seed changes", or after a new seed release. Reads the seed commit hash from .vibin-version, audits the project's actual state, and reconciles seed-owned files while preserving local customizations.
 disable-model-invocation: false
 ---
 
 # Migrate a Vibin project to the latest seed
 
-Vibin is cloned per project, so seed improvements do not arrive automatically. This skill
-applies the **pending migrations** in `migrations/` to bring the project up to date. Each
-migration is a structured, executable upgrade (see `migrations/README.md`).
+Vibin is cloned per project, so seed improvements (its `.claude/**` agents, skills, hooks,
+`CLAUDE.md`, `README.md`, and wiki templates) do not arrive automatically. This skill brings
+a project up to date by **diffing the seed commit the project was last synced to against the
+latest Vibin on GitHub**, then applying the changes — without clobbering local
+customizations.
 
 ## STEP 0 — read the wiki (mandatory, enforced)
 
-**Read `wiki/INDEX.md` first.** A `PreToolUse` hook blocks writes and Bash until you do.
-The migrations touch the wiki, so you must be working from the current source of truth.
+**Read `wiki/INDEX.md` first.** A `PreToolUse` hook blocks writes and Bash until you do. The
+migration touches the wiki, so you must be working from the current source of truth.
+
+## How versioning works
+
+- `.vibin-version` (repo root) holds the **git commit hash** of the Vibin seed this project
+  is currently synced to. `/bootstrap` stamps it with the seed commit the project was cloned
+  from; `/migrate` updates it after a successful upgrade.
+- The Vibin seed lives on GitHub at **`dxlbnl/vibin`** (use the `mcp__github__*` tools, e.g.
+  `get_commit`, `get_file_contents`, `list_commits`). If those tools are not available in
+  this project, add the seed as a git remote and `git fetch` instead, then diff locally.
 
 ## Procedure
 
-1. **Determine the current version.** Read `.vibin-version` at the repo root — a single
-   integer. If the file does not exist, treat the project as version **0**.
-2. **Find pending migrations.** List `migrations/NNNN-*.md`. Select those whose `id` (from
-   frontmatter) is **greater than** the current version **and** whose `status:` is
-   `released`. Sort ascending by id. If none, report "already up to date (vN)" and stop.
-3. **For each pending migration, in order:**
-   a. Read the migration file.
-   b. Run its **`## Detect`** check (read-only). If the change is already present, skip this
-      migration (note it) and move on — migrations are idempotent by design.
-   c. Apply **`## Apply — seed-owned tooling`**: for each listed file under `.claude/**`,
-      `CLAUDE.md`, `README.md`, adopt the new seed text. If the file is unmodified from the
-      seed, replace it wholesale; if it was customised locally, apply the described edits by
-      hand without discarding the customisation.
-   d. Apply **`## Apply — project content (content-aware)`**: follow the steps for
-      `wiki/*.md` and other project-specific files. **Never blind-overwrite** project
-      content — adapt the project's own content to the new structure. **Never rewrite the
-      body of a past `wiki/decisions.md` entry** (append-only).
-   e. Run the migration's **`## Verify`** block and confirm it passes. If it does not, stop
-      and report — do not proceed to later migrations on a broken state.
-4. **Record the new version.** Write the highest applied id to `.vibin-version`.
-5. **Commit.** Stage the changed files and `.vibin-version` and commit with subject
-   `chore: migrate Vibin seed to v<n>`. Do not push unless the user asks.
-6. **Report**: which migrations were applied, which were skipped (already present), the new
-   `.vibin-version`, and anything that needs the user's attention.
+### 1. Establish the two endpoints
+- **BASE** = the hash in `.vibin-version`. If the file is missing, this project predates the
+  marker — stop and ask the user for the Vibin commit it was cloned from (or the approximate
+  date), then proceed with that as BASE.
+- **LATEST** = the head commit of `dxlbnl/vibin`'s default branch (via GitHub).
+- If `BASE == LATEST`, report "already up to date" with the hash and stop.
+
+### 2. Compute the seed diff (BASE → LATEST)
+Get the list of seed-owned files changed between BASE and LATEST on GitHub — anything under
+`.claude/**`, plus `CLAUDE.md`, `README.md`, `CHANGELOG.md`, `migrations/**`, and the
+`wiki/` **template** pages as they ship in the seed. This is the set of upstream changes to
+consider.
+
+### 3. Preflight audit — check the project's actual state (don't worry about every file; DO check the important ones)
+For each changed seed-owned file, classify the project's local copy by comparing it against
+the seed's copy **at BASE** (fetch BASE's version from GitHub):
+
+- **Unchanged locally** (project copy == seed@BASE) → safe to adopt the LATEST version
+  wholesale.
+- **Customized locally** (project copy != seed@BASE) → the project diverged. Do **not**
+  overwrite. Apply the BASE→LATEST change as a 3-way reconcile by hand, preserving the local
+  customization, and call it out in the report.
+
+Prioritize the **load-bearing files** in this audit — the agent definitions
+(`.claude/agents/**`), the skills (`.claude/skills/**`), the hooks (`.claude/hooks/**`), and
+`CLAUDE.md`. A drifted agent or hook is what actually breaks the pipeline; trivial doc drift
+is not worth fussing over.
+
+### 4. Apply
+- **Seed-owned files**: adopt LATEST (unchanged-locally) or 3-way reconcile (customized),
+  per the audit.
+- **Project content** (`wiki/*.md` that hold *project-specific* content, not templates):
+  never derive these from a raw diff. Consult the `migrations/` entries whose `seed_commit`
+  falls in the BASE→LATEST range and follow their **content-aware** steps to adapt the
+  project's own wiki content to the new structure. **Never rewrite the body of a past
+  `wiki/decisions.md` entry** (append-only).
+
+### 5. Record and commit
+- Write **LATEST** to `.vibin-version`.
+- Stage the changed files and `.vibin-version`; commit `chore: migrate Vibin seed to <short-hash>`.
+- Do not push unless the user asks.
+
+### 6. Report
+State: BASE → LATEST hashes, files adopted wholesale, files reconciled by hand (and how),
+any content-aware wiki steps applied, and anything that needs the user's attention.
 
 ## Rules
-
-- **One concern per run.** Apply migrations strictly in id order; never skip ahead past a
-  failing one.
-- **Read-only first.** Always run `## Detect` before changing anything, so a partially
-  upgraded or already-current project is handled safely.
+- **Audit before applying.** Always classify a file (unchanged vs. customized) before
+  touching it — never blind-overwrite a seed-owned file the project may have customized.
+- **Important files first.** Agents, skills, hooks, and `CLAUDE.md` are the ones that must be
+  correct; don't block the whole migration over cosmetic doc drift.
 - **Respect `decisions.md` append-only** — header/format-template text may be updated, past
   entry bodies may not.
-- **No ad-hoc interpreters.** Apply edits with `Read`/`Edit`/`Write`; use `git mv` for moves;
-  do not write throwaway `node`/`python` scripts to transform files (see CLAUDE.md).
-- **This seed itself is already at the latest version**, so running `/migrate` here reports
-  "already up to date". The skill is for downstream clones.
+- **No ad-hoc interpreters.** Apply edits with `Read`/`Edit`/`Write`, moves with `git mv`;
+  do not write throwaway `node`/`python` scripts to transform files (see CLAUDE.md). Reading
+  the GitHub diff is done with the `mcp__github__*` tools or a `git fetch` + `git diff`.
+- **This seed repo is its own latest**, so running `/migrate` here is a no-op. The skill is
+  for downstream clones.
