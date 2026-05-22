@@ -132,11 +132,11 @@ the table below verbatim:
 > use-only-the-declared-package-manager rule, this triple-locks pnpm without a
 > separate hook.
 
-**Stamp the seed version.** Write the seed commit this project was cloned from into
-`.vibin-version` (root) — run `git rev-parse HEAD` *before* the manager makes the baseline
-commit; that hash is the Vibin seed the project's `.claude/**` and templates match. `/migrate`
-later diffs this hash against the latest Vibin to upgrade the project. (This overwrites the
-placeholder hash the seed ships with.)
+**Stamp the seed version.** Create `.vibin-version` (root) containing the seed commit this
+project was cloned from — run `git rev-parse HEAD` *before* the manager makes the baseline
+commit; that hash is the Vibin seed the project's `.claude/**` and templates match.
+`/migrate-vibin` later diffs this hash against the latest Vibin to upgrade the project. (The
+seed repo itself ships no `.vibin-version`, so this is a new file in the clone.)
 
 Do **not** commit the scaffold or settings changes yourself — leave the wiki +
 scaffolding + permissions update as uncommitted changes. The manager commits them as

@@ -4,13 +4,14 @@ Human-facing history of changes to the Vibin **seed** — its agents, skills, ho
 operating rules (`CLAUDE.md`), and wiki templates.
 
 Vibin is cloned per project, so seed improvements do **not** reach already-bootstrapped
-projects automatically. Each released change has an **executable migration** in
-[`migrations/`](migrations/); run [`/migrate`](.claude/skills/migrate/SKILL.md) to apply the
-ones a project is missing. A project's current seed version is recorded in `.vibin-version`.
+projects automatically. Each released change has a **migration** in
+[`migrations/`](migrations/); run [`/migrate-vibin`](.claude/skills/migrate-vibin/SKILL.md)
+to apply the ones a project is missing. A project records the seed commit it is synced to in
+`.vibin-version` (a git hash); the seed repo itself ships no such file.
 
 ## How to upgrade a project
 
-Ask Claude to **"migrate this project to the latest Vibin"** (or run `/migrate`). It reads
+Ask Claude to **"migrate this project to the latest Vibin"** (or run `/migrate-vibin`). It reads
 the seed commit hash in `.vibin-version`, diffs it against the latest Vibin on GitHub
 (`dxlbnl/vibin`), and applies the changes — adopting seed-owned files the project hasn't
 customized, reconciling ones it has (checking the load-bearing files like agents and hooks),

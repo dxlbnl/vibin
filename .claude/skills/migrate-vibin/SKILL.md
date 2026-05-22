@@ -1,6 +1,6 @@
 ---
-name: migrate
-description: Bring an existing Vibin project up to date with the latest seed by diffing the project's recorded seed commit against the latest Vibin on GitHub and applying the changes. Use when the user says "migrate", "upgrade Vibin", "apply the latest seed changes", or after a new seed release. Reads the seed commit hash from .vibin-version, audits the project's actual state, and reconciles seed-owned files while preserving local customizations.
+name: migrate-vibin
+description: Bring an existing Vibin project up to date with the latest seed by diffing the project's recorded seed commit against the latest Vibin on GitHub and applying the changes. Use when the user says "migrate", "migrate-vibin", "upgrade Vibin", "apply the latest seed changes", or after a new seed release. Reads the seed commit hash from .vibin-version, audits the project's actual state, applies the migrations added since, and reconciles seed-owned files while preserving local customizations.
 disable-model-invocation: false
 ---
 
@@ -21,10 +21,17 @@ migration touches the wiki, so you must be working from the current source of tr
 
 - `.vibin-version` (repo root) holds the **git commit hash** of the Vibin seed this project
   is currently synced to. `/bootstrap` stamps it with the seed commit the project was cloned
-  from; `/migrate` updates it after a successful upgrade.
+  from; this skill updates it after a successful upgrade. **The Vibin seed repo itself ships
+  no `.vibin-version`** — it is its own latest, so the marker is meaningless there and
+  exists only in downstream clones.
 - The Vibin seed lives on GitHub at **`dxlbnl/vibin`** (use the `mcp__github__*` tools, e.g.
   `get_commit`, `get_file_contents`, `list_commits`). If those tools are not available in
   this project, add the seed as a git remote and `git fetch` instead, then diff locally.
+- **The diff itself tells you what to run.** Which migrations apply = the
+  `migrations/NNNN-*.md` files that are *newly added* between BASE and LATEST. There is no
+  version-number arithmetic — read those new migration files and follow their content-aware
+  steps (e.g. 0001 says to triage `wiki/decisions.md` and promote the standing constraints
+  into `architecture.md`'s Rules section).
 
 ## Procedure
 
@@ -60,10 +67,10 @@ is not worth fussing over.
 - **Seed-owned files**: adopt LATEST (unchanged-locally) or 3-way reconcile (customized),
   per the audit.
 - **Project content** (`wiki/*.md` that hold *project-specific* content, not templates):
-  never derive these from a raw diff. Consult the `migrations/` entries whose `seed_commit`
-  falls in the BASE→LATEST range and follow their **content-aware** steps to adapt the
-  project's own wiki content to the new structure. **Never rewrite the body of a past
-  `wiki/decisions.md` entry** (append-only).
+  never derive these from a raw diff. For each `migrations/NNNN-*.md` file that the diff
+  shows as newly added, follow its **content-aware** steps to adapt the project's own wiki
+  content to the new structure. **Never rewrite the body of a past `wiki/decisions.md`
+  entry** (append-only).
 
 ### 5. Record and commit
 - Write **LATEST** to `.vibin-version`.
@@ -84,5 +91,5 @@ any content-aware wiki steps applied, and anything that needs the user's attenti
 - **No ad-hoc interpreters.** Apply edits with `Read`/`Edit`/`Write`, moves with `git mv`;
   do not write throwaway `node`/`python` scripts to transform files (see CLAUDE.md). Reading
   the GitHub diff is done with the `mcp__github__*` tools or a `git fetch` + `git diff`.
-- **This seed repo is its own latest**, so running `/migrate` here is a no-op. The skill is
-  for downstream clones.
+- **This seed repo is its own latest**, so running `/migrate-vibin` here is a no-op (and the
+  seed carries no `.vibin-version`). The skill is for downstream clones.
