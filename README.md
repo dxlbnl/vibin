@@ -48,6 +48,7 @@ Items live as per-item files under `wiki/backlog/<lane>/` (lanes: `inbox/` → `
 | `/status` | One-screen summary of where the pipeline is right now: lane counts, the active item with its current stage, blocked items, the last escalation, the next three ready items. Read-only. |
 | `/wiki` | Conventions reference for reading and maintaining the wiki. |
 | `/wiki-sync` | Reconcile the wiki with the current code when the implementation has drifted (or the `PostToolUse` reminder nudges you). |
+| `/migrate` | Bring an existing project up to the latest seed by applying pending `migrations/` in order (see "Upgrading an existing project"). |
 | `/tdd-cycle` | Canonical reference for the red-green-refactor discipline (lives in agent prompts; this page settles arguments). |
 
 ## Staying in (or out of) the loop
@@ -154,10 +155,12 @@ frontend-dev, security-auditor, designer, …) ad hoc, or persist recurring ones
 ## Upgrading an existing project
 
 Vibin is cloned per project, so seed improvements don't reach existing projects
-automatically. [`CHANGELOG.md`](CHANGELOG.md) records each seed change with an
-agent-actionable **Migration** section. To bring an older project up to date, ask Claude
-to *"apply the pending Vibin CHANGELOG migrations"* — it adopts the new tooling text and
-runs the content-aware wiki migrations in order, oldest first.
+automatically. Each released change ships as an executable migration in
+[`migrations/`](migrations/), and a project's current seed version is recorded in
+`.vibin-version`. To bring an older project up to date, ask Claude to *"migrate this
+project to the latest Vibin"* (or run `/migrate`): it reads `.vibin-version`, applies every
+newer migration in order, bumps the version, and commits. [`CHANGELOG.md`](CHANGELOG.md) is
+the human-readable index of those versions.
 
 ## Rolling back
 
