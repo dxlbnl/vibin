@@ -92,8 +92,14 @@ by the agent and skill definitions in `.claude/agents/` and `.claude/skills/`.
   (e.g. `B3: add user login`). Never push unless the user asks.
 - **Resumability** — the manager's durable state is `wiki/backlog/**` +
   `wiki/progress.md`. A fresh `/manager` invocation reads those and continues.
-- **Decision ownership** — any agent making a notable design/tech choice appends it to
-  `wiki/decisions.md` (ADR-style); the manager logs orchestration decisions.
+- **Decisions and rules** — a choice that establishes a **standing constraint**
+  (something future work must obey — a dependency/tool, a pattern, an architectural
+  boundary) is logged to `wiki/decisions.md` (ADR-style rationale) by the agent that made
+  it, *and* surfaced as a one-line RFC-2119 rule in `wiki/architecture.md`'s **Rules**
+  section — the binding index agents read before coding. The **manager owns** the Rules
+  section: subagents write the rationale and flag the constraint, the reviewer confirms a
+  decision exists, and the manager promotes it to a rule when the item is done. Local,
+  one-off choices go in `progress.md`, not `decisions.md`.
 - **Escalation is visible** — when the manager pauses or escalates, it writes the reason
   to `wiki/progress.md` and states it in chat.
 - **Specialist agents** — beyond the four pipeline subagents, the manager may spawn

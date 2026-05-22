@@ -72,6 +72,25 @@ TypeScript projects, **pnpm is the default**. Agents will only use the package
 manager declared there; other package managers aren't added to the allowlist, so
 accidental use of `npm` or `yarn` prompts you.
 
+## Decisions and rules
+
+Two files split the "what" from the "why", because a decision is only useful if the next
+session actually reads it:
+
+- **`wiki/architecture.md` → Rules** is the binding index of standing constraints (which
+  library to use, a pattern code must follow, an architectural boundary). Agents read
+  this page before writing code, so this is where a convention has to live to actually
+  stick. Rules are one line each, RFC-2119 (**MUST** / **SHOULD** / **MAY**), and link to
+  the decision that justifies them.
+- **`wiki/decisions.md`** is the append-only rationale archive (ADR-style): the full
+  "why" behind each rule, never edited — superseded and relinked. Local, one-off choices
+  don't go here; they stay in `progress.md`.
+
+When a new standing convention is adopted — say, "use the component library, don't
+hand-roll UI" — it's logged as a decision, the reviewer flags it, and the manager
+surfaces it as a rule before the item is done. That's what stops the next session from
+quietly reverting to the old pattern.
+
 ## What agents won't do
 
 Agents in this seed repo are constrained on purpose. They **will not**:

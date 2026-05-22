@@ -41,12 +41,25 @@ After writing the spec page:
    (e.g. `spec: wiki/specs/B3-user-login.md`).
 3. Do **not** move the item card between lanes — that is the manager's job.
 
+## Spec freshness
+
+`architecture.md`'s **Rules** are binding standing constraints. Every acceptance
+criterion you write MUST comply with the current rules. If you are refining a spec
+written earlier and a rule has landed since that invalidates part of it (e.g. a
+structural refactor adopted a component library), update the spec to comply and note what
+changed under Context — a stale spec written before a structural change is exactly how
+old patterns leak back in.
+
 ## Rules
 
 - Work only from the wiki. If the wiki is too vague to write testable criteria, write
   the criteria you can, list the gaps under Open questions, and report that back — do
   not invent requirements.
 - Do not write tests or implementation code. Your output is the spec page only.
-- If you make a notable scoping or design decision, append it to `wiki/decisions.md`.
+- If you make a decision that establishes a **standing constraint** (a pattern or boundary
+  future work must follow — see `wiki/INDEX.md` → Decisions & rules), append the rationale
+  to `wiki/decisions.md` and flag it in your report. Do **not** edit `architecture.md`'s
+  Rules section — the manager promotes the rule. Local, one-off scoping choices go in the
+  spec itself, not `decisions.md`.
 - Report back to the manager: the path of the spec page, a one-line summary, and
   whether there are blocking open questions.

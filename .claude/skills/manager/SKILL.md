@@ -17,7 +17,8 @@ That is why the manager is a skill the top-level session runs, not a subagent.
 **You never write product code, tests, or specs yourself** — every such artifact goes
 through a delegated subagent (`spec-writer`, `test-writer`, `implementer`, `reviewer`,
 or an ad-hoc specialist). Your own writing is limited to wiki bookkeeping
-(item cards, `progress.md`, `decisions.md`) and git operations (`git mv` for lane
+(item cards, `progress.md`, `decisions.md`, and the **Rules** section of
+`architecture.md` — which you own; see "Done") and git operations (`git mv` for lane
 moves, `git commit` for completed items).
 
 ## STEP 0 — read the wiki (mandatory, enforced)
@@ -106,6 +107,12 @@ For each item, top of the ordered work plan first:
    - `reviewer` rejection loops back to `implementer` once with the review notes
      attached. A second rejection **escalates**.
 5. **Done** — when the reviewer passes AND the full test suite is green:
+   - **Promote any standing constraint to a rule (mandatory).** If the reviewer flagged
+     that this item established or changed a standing constraint, add or update the
+     one-line RFC-2119 rule in `architecture.md`'s **Rules** section (via `Edit`), citing
+     the `D<n>` the subagent logged in `decisions.md`. This is the step that makes the
+     convention reach the next session — do not skip it. Keep the rule to one line; the
+     rationale stays in `decisions.md`.
    - `git mv wiki/backlog/doing/<id>-<slug>.md wiki/backlog/done/`.
    - Stage all the item's files (test files, implementation files, the moved card,
      any wiki updates) and commit with `B<id>: <title>` as the subject.
@@ -123,7 +130,9 @@ The exact files matter. Templates for each subagent:
 > Read `wiki/INDEX.md`, then `wiki/backlog/doing/<id>-<slug>.md` (the item card),
 > then `wiki/vision.md`, `wiki/requirements.md`, `wiki/architecture.md`, and any
 > existing `wiki/specs/` pages it cross-references. Write
-> `wiki/specs/<id>-<slug>.md` following `wiki/specs/README.md`. Add a row for it to
+> `wiki/specs/<id>-<slug>.md` following `wiki/specs/README.md`. Every criterion must
+> comply with `architecture.md`'s binding **Rules**; if an earlier spec for this item
+> conflicts with a rule that landed since, update it to comply. Add a row for it to
 > the Pages table in `wiki/INDEX.md`. Update the item card's `spec:` frontmatter
 > field to point at the new spec page. Report back: spec path, one-line summary,
 > any blocking open questions.
@@ -179,7 +188,8 @@ one-line reason in `## Notes`.
 ## Logging
 
 Use `Edit` (or `Write` for new files) — never Bash string-manipulation — to update
-item cards (frontmatter, Notes), `wiki/progress.md` (run journal), and
-`wiki/decisions.md` (orchestration decisions, ADR-style). Use `Bash git mv` for lane
-moves; the card filename does not change. Keep `progress.md` current as items move
+item cards (frontmatter, Notes), `wiki/progress.md` (run journal),
+`wiki/decisions.md` (orchestration decisions, ADR-style), and `architecture.md`'s
+**Rules** section (promote a reviewer-flagged standing constraint to a one-line rule when
+an item is done). Use `Bash git mv` for lane moves; the card filename does not change. Keep `progress.md` current as items move
 through the pipeline; it is your durable record of which stage each item is at.

@@ -19,13 +19,21 @@ Read `wiki/INDEX.md` and the pages relevant to the area that changed.
 1. **Find the divergence** — compare the current code against the relevant wiki pages
    (`requirements.md`, `architecture.md`, the affected `wiki/specs/` pages). Look for:
    behaviour the code has that the wiki does not describe; wiki statements the code no
-   longer satisfies; structural drift from `architecture.md`.
+   longer satisfies; structural drift from `architecture.md`; **rule drift** — a rule in
+   `architecture.md`'s Rules section whose linked decision is missing or **superseded/
+   abandoned**, a standing-constraint decision in `decisions.md` with no matching rule, or
+   code that violates a binding rule.
 2. **Classify each gap**:
    - **Code is right, wiki is stale** → update the wiki page to match reality.
    - **Wiki is right, code drifted** → this is a defect; do not edit the wiki to hide
      it. Add a backlog item (or flag it) so it goes through the pipeline.
    - **Genuine decision** → the change was intentional and significant → append an
      entry to `wiki/decisions.md` and update the affected pages.
+   - **Rule drift** → if a rule's decision was superseded, update or remove the rule to
+     match the current decision; if a standing-constraint decision has no rule, add the
+     one-line rule (or, if it is no longer a standing constraint, retire it). If code
+     **violates** a binding rule, that is a defect → file a backlog item; do not weaken
+     the rule to hide it.
 3. **Update `INDEX.md`** if pages were added or restructured.
 4. **Report** what changed in the wiki and what was turned into backlog work.
 

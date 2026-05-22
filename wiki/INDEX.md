@@ -19,7 +19,7 @@ Every agent reads this page first, before doing anything else.
 |------|---------|
 | [vision.md](vision.md) | What the project is and why it exists. |
 | [requirements.md](requirements.md) | Functional requirements and constraints. |
-| [architecture.md](architecture.md) | Tech stack, package manager, test setup, structure. |
+| [architecture.md](architecture.md) | Tech stack, package manager, test setup, structure, and the binding **Rules** index. |
 | [backlog/](backlog/) | Work items, arranged in four lanes (inbox → ready → doing → done). See `backlog/README.md`. |
 | [decisions.md](decisions.md) | Append-only decision log (ADR-style). |
 | [progress.md](progress.md) | Append-only run journal — what the agents have done. |
@@ -39,7 +39,10 @@ Every agent reads this page first, before doing anything else.
 - **Spec pages**: live in `specs/`, one per feature/bug, named after the backlog item
   (e.g. `B3-user-login.md`). They must contain testable acceptance criteria — see
   `specs/README.md`.
-- **Decisions**: when an agent makes a notable design/tech choice, it appends an entry to
-  `decisions.md`.
+- **Decisions & rules**: a choice that establishes a **standing constraint** (something
+  future work must obey) is logged in `decisions.md` (the rationale, ADR-style) **and**
+  appears as a one-line rule in `architecture.md`'s Rules section — the binding index
+  agents read before coding, maintained by the manager. Local, one-off choices go in
+  `progress.md`, not `decisions.md`.
 - **Progress**: the `manager` appends to `progress.md` as items move through the
   pipeline, so the run is auditable.

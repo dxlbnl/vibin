@@ -47,9 +47,20 @@ src/
   lib/          # shared utilities
 ```
 
-## Key technical decisions
+## Rules (binding)
 
-Summarize here; the full rationale log is in `decisions.md`.
+Standing constraints all future work MUST follow. This is the **propagation channel**:
+agents read this page before writing code, so a convention only sticks if it lands here.
+Each rule is one line, derived from a decision in `decisions.md`, and cites it (→ D<n>).
+Keywords follow [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119) — **MUST**,
+**MUST NOT**, **SHOULD**, **MAY** — reserve MUST for genuinely binding rules so the words
+keep their weight. The **manager owns this list**: it promotes a reviewer-flagged
+standing constraint into a rule when an item is done.
 
-- *Example: Use Hono over Express for typed routing and edge compatibility.*
-- *Example: Co-locate tests with source for fast navigation.*
+**Keep this list short.** It is an index of constraints, not the rationale — the "why"
+lives in `decisions.md` via the link, and a bloated list erodes adherence. A rule may
+carry an optional `applies:` scope when it is not universal.
+
+- *Example: All UI components **MUST** come from `@acme/ui`; do not hand-roll styled elements. (→ D7)*
+- *Example: API handlers **SHOULD** validate input at the boundary with `zod`. applies: `src/server/**` (→ D5)*
+- *Example: Dates **MAY** use `date-fns`; no other date library. (→ D9)*

@@ -49,8 +49,10 @@ heading; keep the headings themselves):
 - `wiki/requirements.md` — functional requirements, constraints, assumptions, open
   questions.
 - `wiki/architecture.md` — stack, **package manager** (use the binding format below),
-  test setup (runner + exact command + file convention), project structure, key
-  decisions.
+  test setup (runner + exact command + file convention), project structure, and the
+  **Rules** section. Seed the Rules with the standing constraints implied by your first
+  decisions — at minimum the package-manager rule (→ D2) and any framework/library the
+  project commits to (→ D1). One RFC-2119 line each, citing the decision. Keep it short.
 - `wiki/backlog/inbox/` — **one file per initial backlog item**, not rows in a flat
   file. Filename `B<n>-<slug>.md`. Frontmatter follows `wiki/backlog/README.md`:
 
@@ -72,7 +74,10 @@ heading; keep the headings themselves):
 
   Use `flags: [review]` for any item the user wants to approve before implementation.
 - `wiki/decisions.md` — add the first real entries: D1 the stack choice, D2 the
-  package-manager choice (especially if the user overrode the pnpm default).
+  package-manager choice (especially if the user overrode the pnpm default). Fill each
+  entry's **Rule added/changed** field with the matching one-line rule you put in
+  `architecture.md`'s Rules section, so every decision and its rule are linked from day
+  one.
 
 The architecture page's **Package manager** section is binding. Write it in this
 exact format so agents can mechanically parse it:

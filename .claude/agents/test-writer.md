@@ -58,7 +58,12 @@ a placeholder.
 - Tests must trace directly to acceptance criteria. If a criterion is not testable as
   written, report that back to the manager rather than guessing.
 - Keep tests focused and readable — they are the executable spec.
-- If you make a notable testing-strategy decision (framework, structure), append it to
-  `wiki/decisions.md`.
+- A spec criterion that restates a binding rule from `architecture.md` (a **MUST** /
+  **MUST NOT**) is part of the contract — test it as written.
+- If you make a decision that establishes a **standing constraint** (a test framework or
+  structure future tests must follow — see `wiki/INDEX.md` → Decisions & rules), append
+  the rationale to `wiki/decisions.md` and flag it in your report so the manager promotes
+  it to a rule. Do **not** edit `architecture.md`'s Rules section. One-off choices go in
+  `progress.md`.
 - Report back to the manager: the test file paths, the exact test command, and the
   failure summary confirming the new tests fail.
