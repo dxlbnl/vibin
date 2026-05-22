@@ -24,9 +24,14 @@ migration touches the wiki, so you must be working from the current source of tr
   from; this skill updates it after a successful upgrade. **The Vibin seed repo itself ships
   no `.vibin-version`** — it is its own latest, so the marker is meaningless there and
   exists only in downstream clones.
-- The Vibin seed lives on GitHub at **`dxlbnl/vibin`** (use the `mcp__github__*` tools, e.g.
-  `get_commit`, `get_file_contents`, `list_commits`). If those tools are not available in
-  this project, add the seed as a git remote and `git fetch` instead, then diff locally.
+- The Vibin seed lives on GitHub at **`dxlbnl/vibin`**, and the whole migration runs off its
+  **HTTP API** — not local git. (Projects are often cloned with `.git` wiped before
+  `/bootstrap`, so there is no shared history to `git diff` against; the API only needs the
+  two commit hashes.) Use the `mcp__github__*` tools where available
+  (`get_commit`, `get_file_contents`, `list_commits`), or an authenticated HTTPS GET to
+  `api.github.com`. The key call is the **compare** endpoint:
+  `GET /repos/dxlbnl/vibin/compare/<BASE>...<LATEST>`, which returns every changed file with
+  its status and patch in one response.
 - **The diff itself tells you what to run.** Which migrations apply = the
   `migrations/NNNN-*.md` files that are *newly added* between BASE and LATEST. There is no
   version-number arithmetic — read those new migration files and follow their content-aware
@@ -43,14 +48,16 @@ migration touches the wiki, so you must be working from the current source of tr
 - If `BASE == LATEST`, report "already up to date" with the hash and stop.
 
 ### 2. Compute the seed diff (BASE → LATEST)
-Get the list of seed-owned files changed between BASE and LATEST on GitHub — anything under
-`.claude/**`, plus `CLAUDE.md`, `README.md`, `CHANGELOG.md`, `migrations/**`, and the
-`wiki/` **template** pages as they ship in the seed. This is the set of upstream changes to
-consider.
+Call the GitHub **compare** API (`GET /repos/dxlbnl/vibin/compare/<BASE>...<LATEST>`) to get
+every changed file with its patch — this is the set of upstream changes to consider, and it
+needs no local git history. The relevant entries are seed-owned: anything under `.claude/**`,
+plus `CLAUDE.md`, `README.md`, `CHANGELOG.md`, `migrations/**`, and the `wiki/` **template**
+pages as they ship in the seed.
 
 ### 3. Preflight audit — check the project's actual state (don't worry about every file; DO check the important ones)
 For each changed seed-owned file, classify the project's local copy by comparing it against
-the seed's copy **at BASE** (fetch BASE's version from GitHub):
+the seed's copy **at BASE** (fetch it with `get_file_contents` at `ref=<BASE>`, or the API's
+raw content URL):
 
 - **Unchanged locally** (project copy == seed@BASE) → safe to adopt the LATEST version
   wholesale.
@@ -88,8 +95,8 @@ any content-aware wiki steps applied, and anything that needs the user's attenti
   correct; don't block the whole migration over cosmetic doc drift.
 - **Respect `decisions.md` append-only** — header/format-template text may be updated, past
   entry bodies may not.
-- **No ad-hoc interpreters.** Apply edits with `Read`/`Edit`/`Write`, moves with `git mv`;
-  do not write throwaway `node`/`python` scripts to transform files (see CLAUDE.md). Reading
-  the GitHub diff is done with the `mcp__github__*` tools or a `git fetch` + `git diff`.
+- **API, not local git.** The diff comes from the GitHub compare API (the project may have no
+  `.git` history back to the seed). Apply edits with `Read`/`Edit`/`Write`; do not write
+  throwaway `node`/`python` scripts to transform files (see CLAUDE.md).
 - **This seed repo is its own latest**, so running `/migrate-vibin` here is a no-op (and the
   seed carries no `.vibin-version`). The skill is for downstream clones.
