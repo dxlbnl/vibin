@@ -23,8 +23,24 @@ version, and commits. See [`migrations/README.md`](migrations/README.md) for the
 ## Proposed / upcoming
 
 Designs not yet released live in [`docs/proposals/`](docs/proposals/). When a proposal
-ships it gets a `migrations/` entry and a row above.
+ships it gets a `migrations/` entry and a row in the released table above.
 
-- **RFC-2119 specs** — normative spec requirements with IDs + `GIVEN/WHEN/THEN` scenarios,
-  strict Open-Questions handling, and a manager validation gate.
+- **0001 — RFC-2119 specs** — normative spec requirements with IDs + `GIVEN/WHEN/THEN`
+  scenarios, strict Open-Questions handling, and a manager validation gate.
   [`docs/proposals/0001-rfc2119-specs.md`](docs/proposals/0001-rfc2119-specs.md)
+- **0002 — Lite vs full pipeline** — a gated lightweight track so trivial, behavior-neutral
+  changes skip the full spec→tests→review ceremony.
+  [`docs/proposals/0002-lite-vs-full-pipeline.md`](docs/proposals/0002-lite-vs-full-pipeline.md)
+- **0003 — Skill library + anatomy** — a reusable practice-skill library, plus the
+  Rationalizations / Red flags / Verification anatomy that hardens agents against shortcuts.
+  [`docs/proposals/0003-skill-library-and-anatomy.md`](docs/proposals/0003-skill-library-and-anatomy.md)
+- **0004 — interview-me** — a one-question-at-a-time discipline driving `/bootstrap` and
+  `/intake` to high confidence before acting.
+  [`docs/proposals/0004-interview-me.md`](docs/proposals/0004-interview-me.md)
+- **0005 — Browser testing** — opt-in UI verification (Chrome DevTools MCP / Playwright) so
+  "tests pass" is backed by "it works in a browser."
+  [`docs/proposals/0005-browser-testing.md`](docs/proposals/0005-browser-testing.md)
+
+> Deferred (no proposal yet): **delta / living-per-capability specs** — the real fix for
+> behavioral-spec staleness, but a large change worth its own pass only when a project is big
+> enough to feel the pain. See the appendix of `0001`.
