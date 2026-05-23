@@ -18,7 +18,8 @@ the wiki deliberately — see `/wiki-sync`).
 - `wiki/requirements.md` — functional requirements, constraints, assumptions, open
   questions.
 - `wiki/architecture.md` — stack, **binding package manager**, test setup, project
-  structure, key decisions.
+  structure, and the binding **Rules** index (standing constraints, derived from
+  `decisions.md`, that agents read before writing code).
 - `wiki/backlog/` — work items, one per file, arranged in four lanes:
   `inbox/` → `ready/` → `doing/` → `done/`. See `wiki/backlog/README.md` for the
   schema, lane semantics, and the per-`type:` track table.
@@ -45,8 +46,14 @@ restructure other pages freely.
 - **Spec pages** — live in `wiki/specs/`, one per feature/bug item, following the
   format in `wiki/specs/README.md`. Acceptance criteria must be **testable**. The
   spec page is linked from its item card via the `spec:` frontmatter.
-- **Decisions** — never edit a past entry in `decisions.md`; supersede it with a
-  new one. Any agent making a notable design/tech choice appends an entry.
+- **Decisions & rules** — `decisions.md` is the append-only rationale archive: never edit
+  a past entry, supersede it with a new one and link both. An entry belongs there only if
+  it establishes or changes a **standing constraint** (something future work must obey);
+  local one-off choices go in `progress.md`. Every standing-constraint decision is also
+  surfaced as a one-line rule in `architecture.md`'s **Rules** section — the binding index
+  agents read before coding. The **manager owns** that Rules section: subagents write the
+  rationale to `decisions.md` and flag the constraint, the reviewer confirms the decision
+  exists, and the manager promotes it to a rule when the item is done.
 - **Progress** — the manager appends to `progress.md`; treat it as an audit log. Use
   `/status` for a one-screen summary of where the pipeline is right now.
 

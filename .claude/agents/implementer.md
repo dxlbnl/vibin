@@ -61,8 +61,15 @@ criterion. Report it; do not invent the missing criterion.
   flag it to the manager with the specifics.
 - Stay inside the spec. If you discover the spec is missing something needed to
   implement, report it; do not invent behaviour.
-- If you make a notable implementation decision (a library, a data model, a
-  structural choice), append it to `wiki/decisions.md`.
+- **Follow `architecture.md`'s Rules** — the binding standing constraints (which
+  libraries/patterns to use, boundaries to respect). If your task seems to require
+  violating one, stop and flag it to the manager; do not quietly deviate.
+- If you make a decision that establishes a **standing constraint** (a new dependency, a
+  pattern future code must follow, an architectural boundary — see `wiki/INDEX.md` →
+  Decisions & rules), append the rationale to `wiki/decisions.md` and flag it in your
+  report so the manager promotes it to a rule. Do **not** edit `architecture.md`'s Rules
+  section yourself. Local, one-off choices scoped to this item go in `progress.md`, not
+  `decisions.md`.
 - If your code makes behaviour diverge from a wiki page, update that wiki page (or
   note it for `/wiki-sync`).
 - Report back to the manager: the files written, confirmation the full suite is green

@@ -34,6 +34,13 @@ A `PreToolUse` hook blocks Bash until you have read the wiki.
    files beyond what the spec requires.
 6. **Wiki alignment** — the result matches `wiki/` (vision, requirements,
    architecture, and the spec). If code and wiki diverge, that is a finding.
+7. **Standing constraint propagated** — does this item establish or change a **standing
+   constraint** (a new dependency, a pattern future code must follow, an architectural
+   boundary — something a future unrelated item would need to obey)? If yes: confirm a
+   backing entry exists in `wiki/decisions.md`, and **name the constraint in your report**
+   so the manager can promote it to a one-line rule in `architecture.md`. You do **not**
+   edit the wiki — you flag. A standing constraint with no decision entry is a finding;
+   the manager owns adding the rule.
 
 ## Your report
 

@@ -49,8 +49,10 @@ heading; keep the headings themselves):
 - `wiki/requirements.md` — functional requirements, constraints, assumptions, open
   questions.
 - `wiki/architecture.md` — stack, **package manager** (use the binding format below),
-  test setup (runner + exact command + file convention), project structure, key
-  decisions.
+  test setup (runner + exact command + file convention), project structure, and the
+  **Rules** section. Seed the Rules with the standing constraints implied by your first
+  decisions — at minimum the package-manager rule (→ D2) and any framework/library the
+  project commits to (→ D1). One RFC-2119 line each, citing the decision. Keep it short.
 - `wiki/backlog/inbox/` — **one file per initial backlog item**, not rows in a flat
   file. Filename `B<n>-<slug>.md`. Frontmatter follows `wiki/backlog/README.md`:
 
@@ -72,7 +74,10 @@ heading; keep the headings themselves):
 
   Use `flags: [review]` for any item the user wants to approve before implementation.
 - `wiki/decisions.md` — add the first real entries: D1 the stack choice, D2 the
-  package-manager choice (especially if the user overrode the pnpm default).
+  package-manager choice (especially if the user overrode the pnpm default). Fill each
+  entry's **Rule added/changed** field with the matching one-line rule you put in
+  `architecture.md`'s Rules section, so every decision and its rule are linked from day
+  one.
 
 The architecture page's **Package manager** section is binding. Write it in this
 exact format so agents can mechanically parse it:
@@ -126,6 +131,15 @@ the table below verbatim:
 > with the `wiki/architecture.md` declaration and the agent prompts'
 > use-only-the-declared-package-manager rule, this triple-locks pnpm without a
 > separate hook.
+
+**Stamp the seed version.** Create `.vibin-version` (root) containing the **current head
+commit hash of `dxlbnl/vibin`** — query the GitHub API for it (e.g. `get_commit` /
+`list_commits` on the default branch). A fresh clone *is* the latest seed, so its head hash
+is what the project's `.claude/**` and templates match. Get it from the API rather than
+`git rev-parse HEAD`, because projects are often cloned with `.git` wiped before bootstrap.
+`/migrate-vibin` later diffs this hash against the latest Vibin (via the GitHub compare API)
+to upgrade the project. (The seed repo itself ships no `.vibin-version`, so this is a new
+file in the clone.)
 
 Do **not** commit the scaffold or settings changes yourself — leave the wiki +
 scaffolding + permissions update as uncommitted changes. The manager commits them as

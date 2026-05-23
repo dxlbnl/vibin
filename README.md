@@ -48,6 +48,7 @@ Items live as per-item files under `wiki/backlog/<lane>/` (lanes: `inbox/` → `
 | `/status` | One-screen summary of where the pipeline is right now: lane counts, the active item with its current stage, blocked items, the last escalation, the next three ready items. Read-only. |
 | `/wiki` | Conventions reference for reading and maintaining the wiki. |
 | `/wiki-sync` | Reconcile the wiki with the current code when the implementation has drifted (or the `PostToolUse` reminder nudges you). |
+| `/migrate-vibin` | Bring an existing project up to the latest seed by diffing its `.vibin-version` against the latest Vibin and applying the changes (see "Upgrading an existing project"). |
 | `/tdd-cycle` | Canonical reference for the red-green-refactor discipline (lives in agent prompts; this page settles arguments). |
 
 ## Staying in (or out of) the loop
@@ -71,6 +72,25 @@ Bootstrap asks for your stack and pins the package manager in
 TypeScript projects, **pnpm is the default**. Agents will only use the package
 manager declared there; other package managers aren't added to the allowlist, so
 accidental use of `npm` or `yarn` prompts you.
+
+## Decisions and rules
+
+Two files split the "what" from the "why", because a decision is only useful if the next
+session actually reads it:
+
+- **`wiki/architecture.md` → Rules** is the binding index of standing constraints (which
+  library to use, a pattern code must follow, an architectural boundary). Agents read
+  this page before writing code, so this is where a convention has to live to actually
+  stick. Rules are one line each, RFC-2119 (**MUST** / **SHOULD** / **MAY**), and link to
+  the decision that justifies them.
+- **`wiki/decisions.md`** is the append-only rationale archive (ADR-style): the full
+  "why" behind each rule, never edited — superseded and relinked. Local, one-off choices
+  don't go here; they stay in `progress.md`.
+
+When a new standing convention is adopted — say, "use the component library, don't
+hand-roll UI" — it's logged as a decision, the reviewer flags it, and the manager
+surfaces it as a rule before the item is done. That's what stops the next session from
+quietly reverting to the old pattern.
 
 ## What agents won't do
 
@@ -131,6 +151,18 @@ frontend-dev, security-auditor, designer, …) ad hoc, or persist recurring ones
   every session.
 - `.claude/hooks/wiki-sync-reminder.py` (`PostToolUse`) nudges to keep the wiki in
   sync when product code changes.
+
+## Upgrading an existing project
+
+Vibin is cloned per project, so seed improvements don't reach existing projects
+automatically. A project records the seed commit it is synced to in `.vibin-version` (a git
+hash, stamped at bootstrap), and each released change ships as a migration in
+[`migrations/`](migrations/). To bring an older project up to date, ask Claude to *"migrate
+this project to the latest Vibin"* (or run `/migrate-vibin`): it diffs `.vibin-version`
+against the latest Vibin on GitHub, adopts seed-owned files the project hasn't customized,
+reconciles ones it has, runs the content-aware steps of any migrations the diff added, then
+updates `.vibin-version` and commits. [`CHANGELOG.md`](CHANGELOG.md) is the human-readable
+index of releases.
 
 ## Rolling back
 
