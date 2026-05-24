@@ -24,6 +24,7 @@ following each affected migration's content-aware steps for the project's wiki, 
 |---|---|---|---|
 | v1 | 2026-05-22 | Standing decisions propagate via an `architecture.md` **Rules** index (binding RFC-2119 rules; `decisions.md` becomes a standing-constraint rationale archive; the manager owns the Rules index). | [`migrations/0001-rules-index.md`](migrations/0001-rules-index.md) |
 | v2 | 2026-05-24 | RFC-2119 spec **requirements**: each carries a stable `B<n>-R<k>` id, one RFC-2119 keyword, and ≥1 `GIVEN/WHEN/THEN` scenario (one scenario → one test); strict Open-Questions gate; manager spec-validation check before `test-writer`. | [`migrations/0002-rfc2119-specs.md`](migrations/0002-rfc2119-specs.md) |
+| v3 | 2026-05-24 | `/migrate-vibin` runs through one committed, allow-listed planner script (`migrate-plan.py`) instead of improvised `curl`/`python3 -c` calls — a single approval, deterministic, and it auto-applies only the files unchanged locally while staging the rest. | [`migrations/0003-migrate-planner-script.md`](migrations/0003-migrate-planner-script.md) |
 
 ## Proposed / upcoming
 
