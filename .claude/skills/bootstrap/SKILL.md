@@ -95,6 +95,13 @@ they can add any pages they like. Do not proceed until they confirm.
 
 ## Phase 3 — Scaffold
 
+- **Strip Vibin seed-meta.** A fresh clone carries files that document Vibin's own
+  evolution — they must not live in a project: `git rm -r --quiet migrations/ docs/`,
+  and `git rm --quiet CHANGELOG.md README.md` (Vibin's README describes the seed, not this
+  project; the project's own README comes from the stack scaffold below or a later item).
+  Keep `.vibin-version`, `CLAUDE.md`, `.claude/**`, and `wiki/`. This is
+  the same boundary `/migrate-vibin` enforces: a project gets the pipeline machinery and
+  the *effects* of migrations, never Vibin's changelog, proposals, or migration files.
 - Create the project structure named in `wiki/architecture.md` (e.g. `src/`,
   `tests/`).
 - Set up the **minimal** test runner configuration for the chosen stack — just

@@ -37,8 +37,9 @@ Every agent reads this page first, before doing anything else.
   research / chore) and an optional `flags:` list (`review` to pause for approval,
   `blocked` if stuck). File new work with `/intake`; see `backlog/README.md`.
 - **Spec pages**: live in `specs/`, one per feature/bug, named after the backlog item
-  (e.g. `B3-user-login.md`). They must contain testable acceptance criteria — see
-  `specs/README.md`.
+  (e.g. `B3-user-login.md`). Specs **MUST** state requirements with stable IDs, one
+  RFC-2119 keyword each, and ≥1 `GIVEN/WHEN/THEN` scenario per requirement; a **blocking**
+  open question **MUST** flag the item `review`. See `specs/README.md`.
 - **Decisions & rules**: a choice that establishes a **standing constraint** (something
   future work must obey) is logged in `decisions.md` (the rationale, ADR-style) **and**
   appears as a one-line rule in `architecture.md`'s Rules section — the binding index

@@ -23,15 +23,13 @@ following each affected migration's content-aware steps for the project's wiki, 
 | Version | Date | Change | Migration |
 |---|---|---|---|
 | v1 | 2026-05-22 | Standing decisions propagate via an `architecture.md` **Rules** index (binding RFC-2119 rules; `decisions.md` becomes a standing-constraint rationale archive; the manager owns the Rules index). | [`migrations/0001-rules-index.md`](migrations/0001-rules-index.md) |
+| v2 | 2026-05-24 | RFC-2119 spec **requirements**: each carries a stable `B<n>-R<k>` id, one RFC-2119 keyword, and ≥1 `GIVEN/WHEN/THEN` scenario (one scenario → one test); strict Open-Questions gate; manager spec-validation check before `test-writer`. | [`migrations/0002-rfc2119-specs.md`](migrations/0002-rfc2119-specs.md) |
 
 ## Proposed / upcoming
 
 Designs not yet released live in [`docs/proposals/`](docs/proposals/). When a proposal
 ships it gets a `migrations/` entry and a row in the released table above.
 
-- **0001 — RFC-2119 specs** — normative spec requirements with IDs + `GIVEN/WHEN/THEN`
-  scenarios, strict Open-Questions handling, and a manager validation gate.
-  [`docs/proposals/0001-rfc2119-specs.md`](docs/proposals/0001-rfc2119-specs.md)
 - **0002 — Lite vs full pipeline** — a gated lightweight track so trivial, behavior-neutral
   changes skip the full spec→tests→review ceremony.
   [`docs/proposals/0002-lite-vs-full-pipeline.md`](docs/proposals/0002-lite-vs-full-pipeline.md)

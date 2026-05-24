@@ -98,15 +98,28 @@ For each item, top of the ordered work plan first:
 2. **Dispatch by track** (above). Every `Task` prompt MUST name the **exact files** the
    agent should read and write — agents do not share your conversation. Read templates
    below.
-3. **Review checkpoint #2** — if the item is flagged `review`: after `spec-writer` (or
-   the researcher) produces its artifact, re-read it, present it to the user, and
-   pause for approval. Resume on approval. Unflagged items continue without pause.
-4. **Retry budget**:
+3. **Spec-validation gate (feature/bug, before `test-writer`)** — after `spec-writer`
+   produces `wiki/specs/<id>-<slug>.md`, re-read it and confirm it is valid before
+   dispatching `test-writer`:
+   - every requirement has a `B<n>-R<k>` ID, **exactly one** RFC-2119 keyword
+     (`MUST`/`MUST NOT`/`SHOULD`/`MAY`), and **≥1** `GIVEN/WHEN/THEN` scenario;
+   - every scenario has an **observable** `THEN`;
+   - there are **no unresolved blocking** open questions.
+
+   If the spec fails any check, route it **back to `spec-writer`** with the specific gap
+   (it does not go forward to `test-writer`). This is a manager step — there is no
+   separate validation tooling. A spec with a blocking open question must carry
+   `flags: [review]`; treat that as a review checkpoint, not a gate pass.
+4. **Review checkpoint #2** — if the item is flagged `review`: after the spec passes the
+   gate, re-read the artifact (the spec page, or the researcher's report), present it to
+   the user, and pause for approval. Resume on approval. Unflagged items continue
+   without pause.
+5. **Retry budget**:
    - `implementer` runs its own 3-attempt loop. If still red, route the failure context
      back for one more attempt (4th total). If still red, **escalate**.
    - `reviewer` rejection loops back to `implementer` once with the review notes
      attached. A second rejection **escalates**.
-5. **Done** — when the reviewer passes AND the full test suite is green:
+6. **Done** — when the reviewer passes AND the full test suite is green:
    - **Promote any standing constraint to a rule (mandatory).** If the reviewer flagged
      that this item established or changed a standing constraint, add or update the
      one-line RFC-2119 rule in `architecture.md`'s **Rules** section (via `Edit`), citing
@@ -130,19 +143,22 @@ The exact files matter. Templates for each subagent:
 > Read `wiki/INDEX.md`, then `wiki/backlog/doing/<id>-<slug>.md` (the item card),
 > then `wiki/vision.md`, `wiki/requirements.md`, `wiki/architecture.md`, and any
 > existing `wiki/specs/` pages it cross-references. Write
-> `wiki/specs/<id>-<slug>.md` following `wiki/specs/README.md`. Every criterion must
-> comply with `architecture.md`'s binding **Rules**; if an earlier spec for this item
-> conflicts with a rule that landed since, update it to comply. Add a row for it to
-> the Pages table in `wiki/INDEX.md`. Update the item card's `spec:` frontmatter
-> field to point at the new spec page. Report back: spec path, one-line summary,
-> any blocking open questions.
+> `wiki/specs/<id>-<slug>.md` following `wiki/specs/README.md`: a `## Requirements`
+> section where each requirement has a `B<n>-R<k>` ID, exactly one RFC-2119 keyword, and
+> ≥1 `GIVEN/WHEN/THEN` scenario with an observable `THEN`. Classify every open question
+> blocking/non-blocking. Every requirement must comply with `architecture.md`'s binding
+> **Rules**; if an earlier spec for this item conflicts with a rule that landed since,
+> update it to comply. Add a row for it to the Pages table in `wiki/INDEX.md`. Update the
+> item card's `spec:` frontmatter field to point at the new spec page. Report back: spec
+> path, one-line summary, any blocking open questions.
 
 **test-writer**:
 > Read `wiki/INDEX.md`, `wiki/architecture.md` (for the package manager and test
 > command), `wiki/specs/<id>-<slug>.md`, and the item card at
 > `wiki/backlog/doing/<id>-<slug>.md`. Use the package manager declared in
 > architecture.md — do not substitute. Write failing tests at <test path the
-> architecture page describes>. Run the test command (`<command>`) and confirm the
+> architecture page describes> — **one test per scenario**, named by requirement ID
+> (e.g. `B<n>-R<k> / <scenario>`). Run the test command (`<command>`) and confirm the
 > new tests fail for the right reason. Report back: the test file paths, the exact
 > test command, and the failure summary. If this is a `bug` item, the regression
 > test for the reported failure is required.
@@ -151,20 +167,20 @@ The exact files matter. Templates for each subagent:
 > Read `wiki/INDEX.md`, `wiki/specs/<id>-<slug>.md`, the test files at
 > <paths from test-writer>, `wiki/architecture.md` (for the package manager and
 > test command), and the item card at `wiki/backlog/doing/<id>-<slug>.md`. Use the
-> package manager declared in architecture.md — do not substitute. Write the
-> minimum code to make the failing tests pass; do not weaken tests. Run the full
-> suite with `<command>` until everything is green. Retry budget: 3 attempts. If
-> still red, stop and report what you tried. Report back: files written, full-suite
-> run summary, any flagged tests or spec gaps.
+> package manager declared in architecture.md — do not substitute. Implement the
+> requirements <list the B<n>-R<k> IDs>. Write the minimum code to make the failing
+> tests pass; do not weaken tests. Run the full suite with `<command>` until everything
+> is green. Retry budget: 3 attempts. If still red, stop and report what you tried.
+> Report back: files written, full-suite run summary, any flagged tests or spec gaps.
 
 **reviewer**:
 > Read `wiki/INDEX.md`, `wiki/specs/<id>-<slug>.md`, `wiki/requirements.md`,
 > `wiki/architecture.md`, the test files at <paths>, the implementation files at
 > <paths>, and the item card. Run the full test command `<command>` and confirm
-> green. Verify every acceptance criterion is met and covered by a test. For a `bug`
-> item, confirm the regression test is present. Verify no scope creep. Report PASS
-> or FAIL with specific findings (file path + criterion + expected/actual + suggested
-> fix on FAIL).
+> green. Verify every requirement (by `B<n>-R<k>` ID) is met and each scenario is
+> covered by a passing test. For a `bug` item, confirm the regression test is present.
+> Verify no scope creep. Report PASS or FAIL with specific findings (file path +
+> requirement ID + expected/actual + suggested fix on FAIL).
 
 For `research` items, spawn a `general-purpose` agent with a prompt naming the
 question, the relevant wiki pages, and `wiki/research/<topic>.md` as the output path.

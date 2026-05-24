@@ -45,9 +45,11 @@ date: <YYYY-MM-DD>
 change — e.g. "does `wiki/architecture.md` contain a `## Rules (binding)` section?">
 
 ## Apply — seed-owned tooling
-<files under `.claude/**`, `CLAUDE.md`, `README.md` that are NOT project-specific. If a file
-is unmodified locally, adopt the latest seed version wholesale; if locally customised, apply
-the described edits by hand. List each file + what changed.>
+<child-machinery files only: under `.claude/**`, `CLAUDE.md`, and seed-owned `wiki/`
+template/README pages. NOT seed-meta — never list `migrations/**`, `CHANGELOG.md`, `docs/**`,
+or the repo-root `README.md` here; those are never written into a project. If a file is
+unmodified locally, adopt the latest seed version wholesale; if locally customised, apply the
+described edits by hand. List each file + what changed.>
 
 ## Apply — project content (content-aware)
 <files that hold project-specific content, primarily `wiki/*.md`. NEVER blind-overwrite —
@@ -56,6 +58,11 @@ describe how to adapt the project's own content to the new structure.>
 ## Verify
 <checks that confirm the migration landed correctly.>
 ```
+
+> **Seed-meta vs child-machinery.** `migrations/**`, `CHANGELOG.md`, `docs/**`, and the
+> repo-root `README.md` are Vibin's own evolution log — `/migrate-vibin` reads them for their
+> steps but never copies them into a project. Migrations only ever *write* child-machinery
+> (`.claude/**`, `CLAUDE.md`, wiki templates) and *adapt* project wiki content.
 
 ## Rules for writing and running migrations
 

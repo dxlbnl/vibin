@@ -27,17 +27,53 @@ Research items pair with `wiki/research/<topic>.md` instead. Chore items have no
 ## Context
 <why this feature exists; link to the relevant wiki pages and the item card>
 
-## Acceptance criteria
-<numbered, TESTABLE statements — these map directly to tests>
-1. ...
-2. ...
+> In this page, the keywords MUST, MUST NOT, SHOULD, and MAY are used as defined in
+> RFC 2119 — they mark genuine requirements, not emphasis.
+
+## Requirements
+
+### B<n>-R1: <short name>
+The system MUST <single normative statement>.
+
+- Scenario: <name>
+  GIVEN <starting state>
+  WHEN <action>
+  THEN <observable, testable outcome>
+
+### B<n>-R2: <short name>
+The system SHOULD <single normative statement>.
+
+- Scenario: <name>
+  GIVEN ...
+  WHEN ...
+  THEN ...
 
 ## Out of scope
-<what this feature deliberately does not cover>
+<what this item deliberately does not cover>
 
 ## Open questions
-<anything unresolved; if blocking, the item should be flagged `review` in its card>
+<each question classified **blocking** or **non-blocking**; a blocking question means
+the item MUST be flagged `review` in its card and MUST NOT advance to test-writer>
 ```
 
-The acceptance criteria are the contract: `test-writer` turns each one into failing
-tests, `implementer` makes them pass, `reviewer` checks every criterion is met.
+The requirements are the contract: `test-writer` turns each **scenario** into a failing
+test named by requirement ID, `implementer` makes them pass, `reviewer` verifies each
+requirement ID is met.
+
+## Requirement rules
+
+- **Stable ID** — `B<n>-R<k>` (item id + requirement number). Tests and the reviewer
+  cite it; do not renumber a shipped requirement.
+- **One RFC-2119 keyword** per requirement — exactly one of `MUST` / `MUST NOT` /
+  `SHOULD` / `MAY`, reserved for genuine requirements. Do not MUST-ify ordinary prose;
+  if everything is `MUST`, the keyword loses its weight.
+- **≥1 scenario** per requirement — each a `GIVEN / WHEN / THEN` with an **observable**
+  outcome (a state or output a test can assert, never "feels fast"). A `MUST` scenario
+  is mandatory; a `SHOULD` scenario is tested unless the spec explicitly waives it.
+
+## Open questions are a gate
+
+The `## Open questions` section is enforced, not advisory. The `spec-writer` classifies
+every question as **blocking** or **non-blocking**. A spec carrying any **blocking**
+question MUST NOT advance to `test-writer`: the item is flagged `review` and the manager
+pauses for the user. Non-blocking questions are recorded and the item proceeds.
