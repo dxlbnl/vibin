@@ -24,6 +24,9 @@ docs/proposals/NNNN-*.md  ─►  docs/proposals/implemented/NNNN-*.md
 - When it ships, it is implemented, flipped to `Status: Implemented — ships as migration MMMM`,
   and **moved** into `docs/proposals/implemented/` (proposal ids and migration ids are
   independent sequences — they will not line up).
+- A **phased** proposal ships one migration per phase and records each in its Status; it stays
+  at the top level (still "Proposed") until **all** phases are done, then moves to
+  `implemented/`. (Proposal 0003 is mid-flight: Phase 1 shipped, Phase 2 pending.)
 
 > Note: `docs/**` is **seed-meta** — it documents Vibin's own evolution and is never copied
 > into a child project by `/migrate-vibin`. Reorganizing proposals needs no migration.
@@ -33,7 +36,7 @@ docs/proposals/NNNN-*.md  ─►  docs/proposals/implemented/NNNN-*.md
 | # | Proposal | Summary |
 |---|---|---|
 | 0002 | [Lite vs full pipeline](0002-lite-vs-full-pipeline.md) | A gated lite track so trivial, behavior-neutral product changes skip the full spec→tests→review ceremony. |
-| 0003 | [Skill library + anatomy](0003-skill-library-and-anatomy.md) | Rationalizations / Red-flags / Verification anatomy that hardens agents against shortcuts, plus a reusable practice-skill library. |
+| 0003 | [Skill library + anatomy](0003-skill-library-and-anatomy.md) | Rationalizations / Red-flags / Verification anatomy that hardens agents against shortcuts, plus a reusable practice-skill library. **(Phase 1 shipped as [migration 0004](../../migrations/0004-skill-anatomy.md); Phase 2 pending.)** |
 | 0004 | [interview-me](0004-interview-me.md) | One-question-at-a-time interviewing driving `/bootstrap` and `/intake` to high confidence before acting. |
 | 0005 | [Browser testing](0005-browser-testing.md) | Opt-in UI verification (Chrome DevTools MCP / Playwright) so "tests pass" is backed by "it works in a browser." |
 
