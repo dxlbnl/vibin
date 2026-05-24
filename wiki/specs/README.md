@@ -71,9 +71,15 @@ requirement ID is met.
   outcome (a state or output a test can assert, never "feels fast"). A `MUST` scenario
   is mandatory; a `SHOULD` scenario is tested unless the spec explicitly waives it.
 
-## Open questions are a gate
+## Open questions are answered or deferred
 
-The `## Open questions` section is enforced, not advisory. The `spec-writer` classifies
-every question as **blocking** or **non-blocking**. A spec carrying any **blocking**
-question MUST NOT advance to `test-writer`: the item is flagged `review` and the manager
-pauses for the user. Non-blocking questions are recorded and the item proceeds.
+The `## Open questions` section is enforced, not advisory: no open question silently
+proceeds. The `spec-writer` classifies every question **blocking** or **non-blocking**.
+
+- A spec carrying any **blocking** question MUST NOT advance to `test-writer`. The manager
+  copies the questions onto the item card, flags it `needs-answers`, and bounces it to
+  `inbox/` — then keeps working other items (the run is not stalled). When the user writes
+  answers on the card, the `spec-writer` folds them into the spec and the item resumes.
+- **Non-blocking** questions are recorded and surfaced to the user; the item proceeds.
+- A user's answer can also be **deferred** — recorded under `## Open questions` as
+  `Deferred by user — <reason>` rather than blocking progress.

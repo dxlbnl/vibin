@@ -76,6 +76,10 @@ as a new item in `wiki/backlog/inbox/`, tell the user the id + lane it landed in
 continue the current item. The exception is a trivial typo/comment fix adjacent to the
 current item — fold that into the current item's commit. See CLAUDE.md → Triage.
 
+An **answer to an open question** on the current item (including a decision a specialist
+needs) is **not** new work: fold it into that item's spec (re-dispatch `spec-writer`), never
+`/intake`. Only genuinely new scope or a change of direction becomes a backlog item.
+
 ## Tracks (dispatch on the item's `type:`)
 
 | `type:` | Stages |
@@ -98,28 +102,37 @@ For each item, top of the ordered work plan first:
 2. **Dispatch by track** (above). Every `Task` prompt MUST name the **exact files** the
    agent should read and write — agents do not share your conversation. Read templates
    below.
-3. **Spec-validation gate (feature/bug, before `test-writer`)** — after `spec-writer`
-   produces `wiki/specs/<id>-<slug>.md`, re-read it and confirm it is valid before
-   dispatching `test-writer`:
+3. **Handle open questions (feature/bug — do not stall the run).** After `spec-writer`
+   produces the spec, read its `## Open questions`:
+   - **Any blocking question** → copy the open questions into the item card's
+     `## Open questions`, set `flags: [needs-answers]`, `git mv` the card **back to
+     `wiki/backlog/inbox/`**, note it in `progress.md`, and tell the user which item is
+     waiting and what the questions are. Then **continue with the next ready item** — do
+     **not** block the run on a synchronous prompt. (Resume: see "Items awaiting answers".)
+   - **Only non-blocking questions** → they stay recorded in the spec; surface them to the
+     user in your report, and the item proceeds.
+
+   A **specialist's needed decision** (e.g. a copywriter needing final copy) is an open
+   question on *this* item — route it through here, never `/intake`.
+4. **Spec-validation gate (feature/bug, before `test-writer`)** — once no blocking question
+   remains, re-read `wiki/specs/<id>-<slug>.md` and confirm:
    - every requirement has a `B<n>-R<k>` ID, **exactly one** RFC-2119 keyword
      (`MUST`/`MUST NOT`/`SHOULD`/`MAY`), and **≥1** `GIVEN/WHEN/THEN` scenario;
    - every scenario has an **observable** `THEN`;
-   - there are **no unresolved blocking** open questions.
+   - no blocking open question is left unresolved (blocking ones were bounced in step 3).
 
    If the spec fails any check, route it **back to `spec-writer`** with the specific gap
-   (it does not go forward to `test-writer`). This is a manager step — there is no
-   separate validation tooling. A spec with a blocking open question must carry
-   `flags: [review]`; treat that as a review checkpoint, not a gate pass.
-4. **Review checkpoint #2** — if the item is flagged `review`: after the spec passes the
+   (it does not go forward to `test-writer`). This is a manager step — no separate tooling.
+5. **Review checkpoint #2** — if the item is flagged `review`: after the spec passes the
    gate, re-read the artifact (the spec page, or the researcher's report), present it to
    the user, and pause for approval. Resume on approval. Unflagged items continue
    without pause.
-5. **Retry budget**:
+6. **Retry budget**:
    - `implementer` runs its own 3-attempt loop. If still red, route the failure context
      back for one more attempt (4th total). If still red, **escalate**.
    - `reviewer` rejection loops back to `implementer` once with the review notes
      attached. A second rejection **escalates**.
-6. **Done** — when the reviewer passes AND the full test suite is green:
+7. **Done** — when the reviewer passes AND the full test suite is green:
    - **Promote any standing constraint to a rule (mandatory).** If the reviewer flagged
      that this item established or changed a standing constraint, add or update the
      one-line RFC-2119 rule in `architecture.md`'s **Rules** section (via `Edit`), citing
@@ -134,6 +147,22 @@ For each item, top of the ordered work plan first:
 
 Run **until blocked** — keep pulling items until `ready/` is empty, you hit a review
 checkpoint, or you escalate.
+
+## Items awaiting answers (`needs-answers`)
+
+An item bounced in step 3 sits in `inbox/` flagged `needs-answers` with its questions in its
+`## Open questions`. On every planning pass, handle these **before** triaging genuinely new
+inbox items:
+
+- If the user has written answers on the card (and cleared the flag, or moved it to `ready/`):
+  `git mv` it to `doing/` and re-dispatch **`spec-writer (incorporate answers)`** (template
+  below) to fold the answers into the existing draft spec and clear the resolved questions.
+  Then continue the normal pipeline from the spec-validation gate.
+- If it is still unanswered: **list it as awaiting your answer** (id + the questions) and skip
+  it. A `needs-answers` item never silently advances and is never re-triaged as new work.
+
+The draft spec the spec-writer already wrote persists (the card's `spec:` still points at it);
+bouncing only parks the **card**, it does not discard work.
 
 ## Delegation prompt templates
 
@@ -150,7 +179,16 @@ The exact files matter. Templates for each subagent:
 > **Rules**; if an earlier spec for this item conflicts with a rule that landed since,
 > update it to comply. Add a row for it to the Pages table in `wiki/INDEX.md`. Update the
 > item card's `spec:` frontmatter field to point at the new spec page. Report back: spec
-> path, one-line summary, any blocking open questions.
+> path, one-line summary, and **each open question with its blocking/non-blocking
+> classification**.
+
+**spec-writer (incorporate answers)** — for a resumed `needs-answers` item:
+> Read `wiki/INDEX.md`, the item card at `wiki/backlog/doing/<id>-<slug>.md` (the user's
+> answers are in its `## Open questions`), and the draft spec at `wiki/specs/<id>-<slug>.md`.
+> For each answered question, fold the answer into the relevant requirement or Context and
+> **remove** that open question. For anything the user explicitly deferred, leave it under
+> `## Open questions` annotated `Deferred by user — <reason>`. Do not invent beyond the
+> answers. Report back: what changed, and whether any blocking question remains.
 
 **test-writer**:
 > Read `wiki/INDEX.md`, `wiki/architecture.md` (for the package manager and test

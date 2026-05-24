@@ -23,7 +23,7 @@ id: B3
 title: User login
 type: feature           # feature | bug | research | chore
 priority: high          # high | medium | low
-flags: [review]         # optional list; review = pause for approval, blocked = stuck
+flags: [review]         # optional; review = pause for approval, needs-answers = awaiting user answers, blocked = stuck
 created: 2026-05-14
 spec: wiki/specs/B3-user-login.md   # populated once the spec page exists
 ---
@@ -59,6 +59,11 @@ Unknown type: manager asks the user.
 - **Flags** —
   - `review` — pause for user approval after the spec/artifact is ready, before work.
     The user sets this; the manager may auto-add it for risky/ambiguous items.
+  - `needs-answers` — the item is waiting on the user to answer **blocking** open questions
+    written in its `## Open questions`. The manager bounced the card to `inbox/` and keeps
+    working other items; it never silently advances. **To resume:** write your answers on
+    the card and clear this flag (or move it to `ready/`); the manager then folds the
+    answers into the draft spec and continues.
   - `blocked` — work cannot proceed; include a one-line reason in the `## Notes` body.
 - **Ordering** — `priority: high` items are pulled first. Within a priority, oldest
   `created:` first.

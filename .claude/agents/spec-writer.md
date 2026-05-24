@@ -33,9 +33,11 @@ following the format in `wiki/specs/README.md`:
   behaviour. This section is the contract. Reserve the keywords for genuine requirements
   — do not MUST-ify ordinary prose.
 - **Out of scope** — what this item deliberately does not cover.
-- **Open questions** — classify **every** question as **blocking** or **non-blocking**.
-  A blocking question means the spec MUST NOT advance: set `flags: [review]` on the item
-  card and say so in your report. Non-blocking questions are recorded and proceed.
+- **Open questions** — classify **every** question as **blocking** or **non-blocking**,
+  and report them with their classification. A blocking question means the spec MUST NOT
+  advance — but **you do not move or re-flag the card**; the manager handles that (it bounces
+  the item to `inbox/` with `needs-answers` so the user can answer without stalling the run).
+  Non-blocking questions are recorded and the item proceeds.
 
 After writing the spec page:
 
@@ -44,6 +46,20 @@ After writing the spec page:
 2. Update the item card's `spec:` frontmatter field to point at the new spec page
    (e.g. `spec: wiki/specs/B3-user-login.md`).
 3. Do **not** move the item card between lanes — that is the manager's job.
+
+## Incorporating answers (resumed items)
+
+When the manager re-dispatches you to **incorporate answers** (the item was waiting on the
+user), the user's answers are in the item card's `## Open questions`. For each:
+
+- **Answered** — fold the answer into the spec where it belongs (a new or clarified
+  requirement, or Context), then **remove** that open question. Do not invent beyond what the
+  answer says.
+- **Deferred by the user** — leave it under the spec's `## Open questions`, annotated
+  `Deferred by user — <reason>`. It is recorded, not dangling.
+
+No open question is left unmarked: every one ends up answered-and-folded or explicitly
+deferred. Report what changed and whether any blocking question still remains.
 
 ## Spec freshness
 
@@ -65,8 +81,10 @@ old patterns leak back in.
   to `wiki/decisions.md` and flag it in your report. Do **not** edit `architecture.md`'s
   Rules section — the manager promotes the rule. Local, one-off scoping choices go in the
   spec itself, not `decisions.md`.
-- Report back to the manager: the path of the spec page, a one-line summary, and
-  whether there are blocking open questions.
+- Report back to the manager: the path of the spec page, a one-line summary, and **each
+  open question with its blocking/non-blocking classification** (the manager decides what to
+  surface or bounce — blocking/non-blocking governs whether an open question bounces the item
+  or is recorded-and-proceeds, not whether you write it down).
 
 ## Rationalizations → rebuttals
 

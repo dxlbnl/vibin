@@ -83,6 +83,10 @@ sits in `inbox/` until the manager triages it on its next planning pass.
 
 - One item per invocation. If the user describes two separate things, file them as
   two separate items (call this skill twice).
+- **An answer is not new work.** Do not file an answer to an open question on the item
+  the manager is actively working (including a decision a specialist asked for) — that
+  resolves the current spec, not a new backlog item. Only genuinely new scope or a change
+  of direction is filed here.
 - Do not move items between lanes. The manager owns lane transitions.
 - Do not modify other items.
 - Do not write or run code; you only file a single markdown file.

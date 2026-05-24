@@ -50,7 +50,10 @@ by the agent and skill definitions in `.claude/agents/` and `.claude/skills/`.
   mid-run becomes a new item in `wiki/backlog/inbox/` via `/intake`. Never inline-patch
   in response. The capturing agent files the item, tells the user, and continues the
   current item. The only exception is a trivial typo/comment fix adjacent to the
-  current item, which is folded into the current item's commit.
+  current item, which is folded into the current item's commit. An **answer to an open
+  question** on the current item (including a decision a specialist needs) is *not* new
+  work: it is folded into that item's spec (re-dispatch `spec-writer`), never filed via
+  `/intake`.
 - **No ad-hoc `node`/`python` invocations** — agents must not run `node -e ...`,
   `node <oneoff.js>`, `python -c ...`, `python <oneoff.py>`, or similar interpreter
   scripts as ad-hoc investigation or probing tools. The right tool for each pattern:
