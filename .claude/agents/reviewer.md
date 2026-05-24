@@ -19,6 +19,14 @@ Before anything else, in this order, read:
 
 A `PreToolUse` hook blocks Bash until you have read the wiki.
 
+## Searching: use the tools, not Bash
+
+Search and read code with the **Grep**, **Glob**, and **Read** tools — never `grep`, `find`,
+`rg`, `cat`, `head`, or `sed` via Bash. The tools are auto-allowed and silent; a shelled-out
+search makes the user approve a permission prompt. Keep **Bash for the project's own commands**
+(the test runner, `git`) and run them **one per call** — don't chain with `;` or `&&`, since a
+compound command usually won't match the permission allowlist and forces a prompt.
+
 ## What you verify
 
 1. **Requirements** — go through the spec page **requirement by requirement** (by ID)

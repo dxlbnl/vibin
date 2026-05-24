@@ -70,6 +70,11 @@ by the agent and skill definitions in `.claude/agents/` and `.claude/skills/`.
   **proper tool** — a committed **Playwright** test and/or the **Chrome DevTools MCP** (the
   reviewer drives the running app + captures a screenshot) — **never** ad-hoc `node`/`python`
   browser scripts.
+- **Search with tools, not Bash** — inspect code with the `Grep`/`Glob`/`Read` tools, never
+  shelled `grep`/`find`/`rg`/`cat`/`head`/`sed`. The tools are auto-allowed and silent; a
+  shelled-out search makes the user approve a permission prompt. Reserve Bash for the project's
+  own commands (test runner, `git`) and run them **one per call** — chaining with `;`/`&&`
+  usually won't match the permission allowlist as a single prefix, so it prompts too.
 - **No ad-hoc `node`/`python` invocations** — agents must not run `node -e ...`,
   `node <oneoff.js>`, `python -c ...`, `python <oneoff.py>`, or similar interpreter
   scripts as ad-hoc investigation or probing tools. The right tool for each pattern:
