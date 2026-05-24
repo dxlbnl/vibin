@@ -7,10 +7,25 @@ disable-model-invocation: false
 # Migrate a Vibin project to the latest seed
 
 Vibin is cloned per project, so seed improvements (its `.claude/**` agents, skills, hooks,
-`CLAUDE.md`, `README.md`, and wiki templates) do not arrive automatically. This skill brings
+`CLAUDE.md`, and wiki **template** pages) do not arrive automatically. This skill brings
 a project up to date by **diffing the seed commit the project was last synced to against the
 latest Vibin on GitHub**, then applying the changes — without clobbering local
 customizations.
+
+## What propagates to a project — and what never does
+
+The seed repo contains two kinds of files. Classify every changed file before touching it:
+
+- **Child machinery (propagates — adopt or reconcile):** everything under `.claude/**`,
+  `CLAUDE.md`, and the seed-owned **wiki template / README** pages (e.g.
+  `wiki/specs/README.md`, `wiki/backlog/README.md`). These are the pipeline itself, so a
+  project needs the latest version.
+- **Seed-meta (NEVER written into a project):** `migrations/**`, `CHANGELOG.md`, `docs/**`,
+  and the repo-root `README.md`. These document Vibin's own evolution; a project needs only
+  the *effects* of a migration, not the migration files or Vibin's changelog/proposals. The
+  skill **reads** `migrations/NNNN-*.md` from GitHub to learn each migration's content-aware
+  steps and **applies** those steps, but it **never creates** these files in the project.
+  (`.vibin-version` is the one marker a project keeps — this skill updates it.)
 
 ## STEP 0 — read the wiki (mandatory, enforced)
 
@@ -50,14 +65,17 @@ migration touches the wiki, so you must be working from the current source of tr
 ### 2. Compute the seed diff (BASE → LATEST)
 Call the GitHub **compare** API (`GET /repos/dxlbnl/vibin/compare/<BASE>...<LATEST>`) to get
 every changed file with its patch — this is the set of upstream changes to consider, and it
-needs no local git history. The relevant entries are seed-owned: anything under `.claude/**`,
-plus `CLAUDE.md`, `README.md`, `CHANGELOG.md`, `migrations/**`, and the `wiki/` **template**
-pages as they ship in the seed.
+needs no local git history. Split the changed entries using the classification above:
+**child machinery** (under `.claude/**`, plus `CLAUDE.md` and the `wiki/` template/README
+pages) is what you adopt or reconcile into the project. **Seed-meta** (`migrations/**`,
+`CHANGELOG.md`, `docs/**`, the repo-root `README.md`) is **not** written to the project — but
+note which `migrations/NNNN-*.md` files are **newly added**, because their content-aware
+steps drive the project-content updates in step 4.
 
 ### 3. Preflight audit — check the project's actual state (don't worry about every file; DO check the important ones)
-For each changed seed-owned file, classify the project's local copy by comparing it against
-the seed's copy **at BASE** (fetch it with `get_file_contents` at `ref=<BASE>`, or the API's
-raw content URL):
+For each changed **child-machinery** file (skip seed-meta — it is never written here),
+classify the project's local copy by comparing it against the seed's copy **at BASE** (fetch
+it with `get_file_contents` at `ref=<BASE>`, or the API's raw content URL):
 
 - **Unchanged locally** (project copy == seed@BASE) → safe to adopt the LATEST version
   wholesale.
@@ -71,8 +89,12 @@ Prioritize the **load-bearing files** in this audit — the agent definitions
 is not worth fussing over.
 
 ### 4. Apply
-- **Seed-owned files**: adopt LATEST (unchanged-locally) or 3-way reconcile (customized),
+- **Child machinery**: adopt LATEST (unchanged-locally) or 3-way reconcile (customized),
   per the audit.
+- **Seed-meta** (`migrations/**`, `CHANGELOG.md`, `docs/**`, repo-root `README.md`): do
+  **not** write these into the project. Read the newly-added `migrations/NNNN-*.md` from
+  GitHub for their steps only — do not create a `migrations/` dir, a `CHANGELOG.md`, a
+  `docs/` tree, or overwrite the project's own `README.md`.
 - **Project content** (`wiki/*.md` that hold *project-specific* content, not templates):
   never derive these from a raw diff. For each `migrations/NNNN-*.md` file that the diff
   shows as newly added, follow its **content-aware** steps to adapt the project's own wiki
@@ -89,8 +111,12 @@ State: BASE → LATEST hashes, files adopted wholesale, files reconciled by hand
 any content-aware wiki steps applied, and anything that needs the user's attention.
 
 ## Rules
+- **Never write seed-meta into the project.** `migrations/**`, `CHANGELOG.md`, `docs/**`,
+  and the repo-root `README.md` are Vibin's own evolution log — a project gets the *effects*
+  of a migration, never the files. Read migrations from GitHub for their steps; do not copy
+  them, the changelog, the proposals, or Vibin's README into the project.
 - **Audit before applying.** Always classify a file (unchanged vs. customized) before
-  touching it — never blind-overwrite a seed-owned file the project may have customized.
+  touching it — never blind-overwrite a child-machinery file the project may have customized.
 - **Important files first.** Agents, skills, hooks, and `CLAUDE.md` are the ones that must be
   correct; don't block the whole migration over cosmetic doc drift.
 - **Respect `decisions.md` append-only** — header/format-template text may be updated, past
