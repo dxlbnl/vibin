@@ -15,9 +15,10 @@ hook blocks writing until you do.
 If `wiki/` already has filled-in pages (not the starter templates), do **not**
 overwrite — offer to refine instead, and skip to Phase 3.
 
-Use the `AskUserQuestion` tool to interview the user. Ask in batches; don't
-interrogate. Infer sensible defaults and confirm them rather than asking everything
-cold. Cover, at minimum:
+Interview the user following the **interview discipline** in
+`.claude/skills/interview/SKILL.md`: one adaptive question at a time (batch only genuinely
+independent ones), infer-and-confirm rather than asking cold, track confidence to ~95%, and
+let the user short-circuit at any point. Cover, at minimum:
 
 - **Project** — what is being built, why, who for, what success looks like, non-goals.
 - **Stack** — pick one: `TypeScript`, `Python`, `Rust`, `Go`, `Other`. Pin the

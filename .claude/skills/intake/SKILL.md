@@ -36,9 +36,10 @@ Take the title from the `/intake "<title>"` argument if present. Then use
   pauses for approval before tests/impl. Default to yes for `bug` (regression risk)
   and for any item the user describes as architectural/risky.
 
-Ask in a single batch of `AskUserQuestion` calls when invoked interactively; if
-invoked by another agent mid-task, take whatever fields the agent provides and only
-ask the user for the rest.
+A **clearly-specified** ask files in one shot — don't add friction where there's none. For a
+**vague** item, follow the interview discipline in `.claude/skills/interview/SKILL.md`: ask the
+one or two adaptive questions that make it actionable, then file. If invoked by another agent
+mid-task, take whatever fields the agent provides and only ask the user for the rest.
 
 ### Step 3 — allocate the id
 
