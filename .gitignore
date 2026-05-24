@@ -1,2 +1,5 @@
 # Claude Code per-session state (wiki-gate markers, etc.)
 .claude/state/
+
+# /migrate-vibin planner staging (fetched seed content; safe to delete)
+.vibin-migrate/
