@@ -28,22 +28,14 @@ following each affected migration's content-aware steps for the project's wiki, 
 
 ## Proposed / upcoming
 
-Designs not yet released live in [`docs/proposals/`](docs/proposals/). When a proposal
-ships it gets a `migrations/` entry and a row in the released table above.
+Designs not yet released live in [`docs/proposals/`](docs/proposals/) — see
+[`docs/proposals/README.md`](docs/proposals/README.md) for the authoritative proposal index
+(proposed vs implemented), the shipping checklist, and the implementation roadmap. When a
+proposal ships it gets a `migrations/` entry and a row in the released table above.
 
-- **0002 — Lite vs full pipeline** — a gated lightweight track so trivial, behavior-neutral
-  changes skip the full spec→tests→review ceremony.
-  [`docs/proposals/0002-lite-vs-full-pipeline.md`](docs/proposals/0002-lite-vs-full-pipeline.md)
-- **0003 — Skill library + anatomy** — a reusable practice-skill library, plus the
-  Rationalizations / Red flags / Verification anatomy that hardens agents against shortcuts.
-  [`docs/proposals/0003-skill-library-and-anatomy.md`](docs/proposals/0003-skill-library-and-anatomy.md)
-- **0004 — interview-me** — a one-question-at-a-time discipline driving `/bootstrap` and
-  `/intake` to high confidence before acting.
-  [`docs/proposals/0004-interview-me.md`](docs/proposals/0004-interview-me.md)
-- **0005 — Browser testing** — opt-in UI verification (Chrome DevTools MCP / Playwright) so
-  "tests pass" is backed by "it works in a browser."
-  [`docs/proposals/0005-browser-testing.md`](docs/proposals/0005-browser-testing.md)
+Currently proposed: **0002** lite vs full pipeline, **0003** skill library + anatomy,
+**0004** interview-me, **0005** browser testing.
 
 > Deferred (no proposal yet): **delta / living-per-capability specs** — the real fix for
 > behavioral-spec staleness, but a large change worth its own pass only when a project is big
-> enough to feel the pain. See the appendix of `0001`.
+> enough to feel the pain. See the appendix of proposal `0001`.
