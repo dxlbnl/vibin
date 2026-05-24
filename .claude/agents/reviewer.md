@@ -43,6 +43,22 @@ A `PreToolUse` hook blocks Bash until you have read the wiki.
    edit the wiki — you flag. A standing constraint with no decision entry is a finding;
    the manager owns adding the rule.
 
+## Lite review (`mode: lite` items)
+
+If the item card carries `mode: lite`, there is **no spec page** — do not look for requirement
+IDs. Instead verify:
+
+1. **Matches the card** — the change does what the card's `## Description` + acceptance note
+   say, and nothing more.
+2. **Full suite green** — run the entire test command; confirm no regressions (a lite change
+   adds no new test by design, so the existing suite is the safety net).
+3. **Behavior-neutral + no scope creep** — the change introduces no new observable behavior, no
+   schema/API/contract change, no new dependency, and is not security-sensitive; it complies
+   with `architecture.md`'s Rules.
+4. **Gate still holds** — if the change actually introduced assertable behavior or otherwise
+   exceeded the lite gate, **FAIL** with "needs the full track" so the manager promotes it to
+   the full `spec-writer → test-writer → implementer → reviewer` pipeline.
+
 ## Your report
 
 Return to the manager a clear verdict — **PASS** or **FAIL** — followed by findings.

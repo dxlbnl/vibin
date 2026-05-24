@@ -89,8 +89,42 @@ needs) is **not** new work: fold it into that item's spec (re-dispatch `spec-wri
 | `research` | `general-purpose` researcher (writes `wiki/research/<topic>.md`) → `reviewer` (confirms findings answer the question, no implementation) |
 | `chore` | `implementer` → `reviewer` (no spec page, no tests-first) — dep bumps, doc reorgs, infra |
 
+A `feature`/`bug` card may carry **`mode: lite`** to run the lite track (`implementer` →
+`reviewer (lite)`, no spec, no tests-first) — but only when it passes the **lite gate** below.
+
 For unknown types: ask the user before proceeding. To add a project-specific type,
 record the decision in `wiki/decisions.md` and extend this table by editing this skill.
+
+## Lite track (`mode: lite`)
+
+The lite track cuts ceremony for **small, behavior-neutral product changes** (a copy fix, a
+CSS tweak, trivial config). It is **gated**, and it is **never** a tests-first bypass for real
+behavior.
+
+**Lite gate — an item may run lite only if ALL hold:**
+- touches **≤ ~a handful of files** and adds **no new dependency**;
+- makes **no schema, API, or public-contract change**;
+- introduces **no new observable behavior that warrants a test** (cosmetic, copy, formatting,
+  comment, trivial config, doc-in-code);
+- is **not security-sensitive** (auth, secrets, input handling, permissions).
+
+If **any** condition fails → run **full**. When in doubt → **full**. A `bug` that fixes real
+behavior is **always full** (it needs a regression test). `chore` is non-product work (deps,
+infra, doc reorgs); `lite` is a *trivial product* change — keep them distinct.
+
+**Dispatch.** For a `mode: lite` item that passes the gate, dispatch **`implementer (lite)` →
+`reviewer (lite)`** only. Skip `spec-writer` and `test-writer` — and therefore steps 3 (open
+questions) and 4 (spec-validation gate), which are spec-only. The contract is the card's
+`## Description` plus a one-line acceptance note (no spec page).
+
+**Gate re-check (before honoring lite).** Re-apply the gate yourself before dispatching. If any
+condition fails, **run the item full** and note the downgrade + reason in `wiki/progress.md`.
+
+**Auto-promote (mid-flight).** If the `implementer (lite)` reports the change is bigger than
+the gate allows (assertable behavior, a schema/API/contract change, more than a handful of
+files, or anything security-sensitive), **reroute through the full track** (`spec-writer` →
+`test-writer` → `implementer` → `reviewer`), set the card to `mode: full`, and note the
+promotion in `wiki/progress.md`. Likewise if `reviewer (lite)` FAILs with "needs full track".
 
 ## The per-item pipeline
 
@@ -239,6 +273,25 @@ The exact files matter. Templates for each subagent. Where a practice applies, a
 > covered by a passing test. For a `bug` item, confirm the regression test is present.
 > Verify no scope creep. Report PASS or FAIL with specific findings (file path +
 > requirement ID + expected/actual + suggested fix on FAIL).
+
+**implementer (lite)** — for a `mode: lite` item (no spec, no tests):
+> Read `wiki/INDEX.md`, the item card at `wiki/backlog/doing/<id>-<slug>.md`, and
+> `wiki/architecture.md` (package manager + test command). There is **no** spec page or
+> failing test — the contract is the card's `## Description` + this acceptance note: <one
+> line>. Make that change and **nothing more**; it must be **behavior-neutral** (the lite
+> gate). Run the full suite with `<command>` and confirm it stays green (no regressions). If
+> the change turns out to need new behavior, a schema/API change, more than a handful of
+> files, or anything security-sensitive, **stop and report that it needs the full track** —
+> do not implement it lite. Report back: files changed, full-suite summary, or a
+> needs-full-track flag.
+
+**reviewer (lite)** — for a `mode: lite` item:
+> Read `wiki/INDEX.md`, `wiki/architecture.md`, the item card, and the changed files. There
+> is **no** spec page — do not look for requirement IDs. Verify: the change matches the card's
+> `## Description` + acceptance note; the **full** suite is green (run `<command>`); no scope
+> creep; the change is genuinely behavior-neutral and complies with `architecture.md`'s Rules.
+> If the change actually introduced assertable behavior or exceeded the lite gate, **FAIL**
+> with "needs the full track" so the manager promotes it. Otherwise PASS.
 
 For `research` items, spawn a `general-purpose` agent with a prompt naming the
 question, the relevant wiki pages, and `wiki/research/<topic>.md` as the output path.

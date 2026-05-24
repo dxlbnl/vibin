@@ -35,6 +35,12 @@ Take the title from the `/intake "<title>"` argument if present. Then use
 - **review flag** — yes / no (default no). Sets `flags: [review]` so the manager
   pauses for approval before tests/impl. Default to yes for `bug` (regression risk)
   and for any item the user describes as architectural/risky.
+- **mode** (feature only) — `full` (default) / `lite`. Suggest `lite` for an obviously
+  trivial, **behavior-neutral** ask (copy/text, CSS, a trivial config tweak) that touches few
+  files, changes no schema/API, and isn't security-sensitive; the user can set or veto it. A
+  `bug` is never lite. This is only a hint — the **manager re-checks the lite gate** and
+  silently runs full (or auto-promotes mid-flight) if it doesn't qualify, so a wrong guess is
+  caught, not relied on. Record `mode: lite` in the card; omit the field for full.
 
 A **clearly-specified** ask files in one shot — don't add friction where there's none. For a
 **vague** item, follow the interview discipline in `.claude/skills/interview/SKILL.md`: ask the
@@ -58,6 +64,7 @@ title: <title>
 type: <type>
 priority: <priority>
 flags: <[review] | []>
+mode: lite              # OMIT this line for full (the default)
 created: <today YYYY-MM-DD>
 ---
 

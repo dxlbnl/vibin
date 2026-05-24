@@ -29,9 +29,12 @@ by the agent and skill definitions in `.claude/agents/` and `.claude/skills/`.
    - `bug` → same as feature, plus a regression test for the reported failure
    - `research` → `researcher` specialist → reviewer confirms findings
    - `chore` → `implementer` → `reviewer` (no spec, no tests-first)
-3. **Tests are always written first** (for `feature` and `bug` items). `test-writer`
+   - a `feature`/`bug` with `mode: lite` → `implementer` → `reviewer (lite)` (no spec, no
+     tests-first) **when it passes the lite gate** (see Operational rules → Lite track)
+3. **Tests are always written first** for **full** `feature`/`bug` items. `test-writer`
    writes failing tests from the spec page and confirms red; `implementer` writes the
-   minimum code to reach green.
+   minimum code to reach green. (A gate-passing `mode: lite` item is behavior-neutral, so
+   there is nothing to assert and no test is written.)
 4. An item is **done** when the reviewer passes AND the full test suite is green. The
    manager `git mv`s the item file to `wiki/backlog/done/`, commits one commit per
    completed item (no push), and loops.
@@ -54,6 +57,14 @@ by the agent and skill definitions in `.claude/agents/` and `.claude/skills/`.
   question** on the current item (including a decision a specialist needs) is *not* new
   work: it is folded into that item's spec (re-dispatch `spec-writer`), never filed via
   `/intake`.
+- **Lite track** — a `feature`/`bug` may carry `mode: lite` to skip the spec page and
+  tests-first (`implementer` → `reviewer (lite)`), but **only** for a gate-passing,
+  behavior-neutral product change: ≤ a handful of files, no new dependency, no schema/API/
+  contract change, nothing security-sensitive, and nothing observable that warrants a test.
+  The manager re-checks the gate before honoring lite and **auto-promotes to full** if the
+  change turns out bigger. A `bug` that fixes real behavior is always full. Lite is never a
+  tests-first bypass for real behavior; `chore` is non-product work, `lite` is trivial product
+  work.
 - **No ad-hoc `node`/`python` invocations** — agents must not run `node -e ...`,
   `node <oneoff.js>`, `python -c ...`, `python <oneoff.py>`, or similar interpreter
   scripts as ad-hoc investigation or probing tools. The right tool for each pattern:
