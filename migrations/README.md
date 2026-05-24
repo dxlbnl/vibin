@@ -56,7 +56,10 @@ described edits by hand. List each file + what changed.>
 describe how to adapt the project's own content to the new structure.>
 
 ## Verify
-<checks that confirm the migration landed correctly.>
+<checks that confirm the migration landed correctly. Write them so an agent can confirm
+them with read-only tools (`Read`/`Grep`/`Glob`) — NOT shell commands. Avoid `py_compile`,
+`rm`, and ad-hoc `grep`/`python3 -c` here: they force permission prompts, and `/migrate-vibin`
+verifies with read-only tools.>
 ```
 
 > **Seed-meta vs child-machinery.** `migrations/**`, `CHANGELOG.md`, `docs/**`, and the

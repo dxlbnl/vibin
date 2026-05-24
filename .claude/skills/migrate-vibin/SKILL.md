@@ -92,14 +92,21 @@ For each **RECONCILE** file, read `.vibin-migrate/base/<path>`, `.vibin-migrate/
 and the local file, and hand-merge the BASE→LATEST change into the local copy without losing
 the customization.
 
-### 4. Record and commit
+### 4. Verify (read-only — no Bash, no prompts)
+Run each applied migration's `## Verify` checks using the **`Grep`/`Read`/`Glob` tools**, not
+Bash. These tools are auto-allowed, so verification never triggers a permission prompt. Do
+**not** shell out to `grep`/`python3 -m py_compile`/`rm` for this — in particular, the planner
+already ran in step 1 (so it provably works; no re-compile needed) and direct script runs
+create no `__pycache__` to clean.
+
+### 5. Record and commit
 - Write the **LATEST** hash (printed by the script) to `.vibin-version`.
 - Remove the staging dir with the same tool (already allow-listed, no extra prompt):
   `python3 .claude/skills/migrate-vibin/migrate-plan.py --clean`.
 - Stage the applied + reconciled files, the wiki edits, and `.vibin-version`; commit
   `chore: migrate Vibin seed to <short-hash>`. Do not push unless the user asks.
 
-### 5. Report
+### 6. Report
 State: BASE → LATEST hashes, files applied wholesale, files reconciled by hand (and how),
 content-aware wiki steps applied, and anything that needs the user's attention.
 

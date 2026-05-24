@@ -57,10 +57,12 @@ None. This migration changes only seed tooling; it does not touch project wiki c
 
 ## Verify
 
-- `.claude/skills/migrate-vibin/migrate-plan.py` exists and compiles
-  (`python3 -m py_compile .claude/skills/migrate-vibin/migrate-plan.py`).
-- `python3 .claude/skills/migrate-vibin/migrate-plan.py --clean` runs without a permission
-  prompt (the allow-list entry is present in `.claude/settings.json`).
+Confirm all of these with read-only tools (`Glob`/`Read`/`Grep`) — no Bash, no prompts:
+
+- `.claude/skills/migrate-vibin/migrate-plan.py` exists (it already ran in step 1, so it is
+  known to work — no separate compile check needed).
+- `.claude/settings.json` `permissions.allow` contains
+  `"Bash(python3 .claude/skills/migrate-vibin/migrate-plan.py:*)"`.
 - `.claude/skills/migrate-vibin/SKILL.md`'s Procedure runs the script; no remaining
   instruction to improvise `curl` / `python3 -c` / the compare API by hand.
 - `.gitignore` contains `.vibin-migrate/`.
