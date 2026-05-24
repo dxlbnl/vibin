@@ -1,9 +1,9 @@
 # Proposal 0004 — interview-me discipline for bootstrap & intake
 
-- **Status:** Proposed (not yet implemented)
+- **Status:** Implemented — ships as migration `0007` (`migrations/0007-interview-me.md`)
 - **Date:** 2026-05-22
 - **Affects:** `/bootstrap` (the interview phase) and `/intake`
-- **Ships as:** a future `migrations/` entry once implemented
+- **Ships as:** migration `0007`
 
 ## Context
 
