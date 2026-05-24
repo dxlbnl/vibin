@@ -35,7 +35,6 @@ docs/proposals/NNNN-*.md  ─►  docs/proposals/implemented/NNNN-*.md
 
 | # | Proposal | Summary |
 |---|---|---|
-| 0002 | [Lite vs full pipeline](0002-lite-vs-full-pipeline.md) | A gated lite track so trivial, behavior-neutral product changes skip the full spec→tests→review ceremony. |
 | 0005 | [Browser testing](0005-browser-testing.md) | Opt-in UI verification (Chrome DevTools MCP / Playwright) so "tests pass" is backed by "it works in a browser." |
 
 ## Implemented
@@ -43,6 +42,7 @@ docs/proposals/NNNN-*.md  ─►  docs/proposals/implemented/NNNN-*.md
 | # | Proposal | Shipped as |
 |---|---|---|
 | 0001 | [RFC-2119 specs](implemented/0001-rfc2119-specs.md) | [migration 0002](../../migrations/0002-rfc2119-specs.md) |
+| 0002 | [Lite vs full pipeline](implemented/0002-lite-vs-full-pipeline.md) | [migration 0008](../../migrations/0008-lite-pipeline.md) |
 | 0003 | [Skill library + anatomy](implemented/0003-skill-library-and-anatomy.md) | [migration 0004](../../migrations/0004-skill-anatomy.md) (Phase 1) + [migration 0006](../../migrations/0006-practice-library.md) (Phase 2) |
 | 0004 | [interview-me](implemented/0004-interview-me.md) | [migration 0007](../../migrations/0007-interview-me.md) |
 
@@ -66,16 +66,13 @@ When a proposal is implemented, do these in order (this is exactly how 0001 ship
 
 ## Roadmap
 
-Recommended order for the **remaining** proposed designs. Each ships one-by-one via the
-checklist above; each carries open questions to settle at its own implementation time.
+One proposed design remains. It ships via the checklist above; it carries open questions to
+settle at implementation time.
 
-1. **0002 — lite vs full pipeline** *(next up)*. The gated lite track across the manager,
-   `/intake`, `reviewer`, and the backlog schema. Forks: `mode: lite` flag vs a new `type:`
-   (leans flag); the auto-promote-to-full rule.
-2. **0005 — browser testing** *(last; largest, most uncertain)*. Opt-in UI verification wired
+1. **0005 — browser testing** *(last; largest, most uncertain)*. Opt-in UI verification wired
    by `/bootstrap` for frontend stacks. Big fork: Chrome DevTools MCP vs committed Playwright
    (possibly both); a separate stage vs folded into `reviewer`; how a spec marks "has UI".
 
-**Done:** 0001 (RFC-2119 specs → migration 0002); 0003 (skill anatomy → migration 0004,
-practice library → migration 0006); 0004 (interview-me → migration 0007). Out-of-band fix not
-from a proposal: open-questions resolution → migration 0005.
+**Done:** 0001 (RFC-2119 specs → migration 0002); 0002 (lite pipeline → migration 0008);
+0003 (skill anatomy → migration 0004, practice library → migration 0006); 0004 (interview-me →
+migration 0007). Out-of-band fix not from a proposal: open-questions resolution → migration 0005.

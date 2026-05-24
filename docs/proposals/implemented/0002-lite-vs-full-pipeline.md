@@ -1,9 +1,9 @@
 # Proposal 0002 — Lite vs full pipeline mode
 
-- **Status:** Proposed (not yet implemented)
+- **Status:** Implemented — ships as migration `0008` (`migrations/0008-lite-pipeline.md`)
 - **Date:** 2026-05-22
 - **Affects:** the manager's per-item track dispatch, `/intake`, the backlog item schema
-- **Ships as:** a future `migrations/` entry once implemented
+- **Ships as:** migration `0008`
 
 ## Context
 
