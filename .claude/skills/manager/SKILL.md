@@ -214,8 +214,16 @@ it checks against it. Never load the whole library. Rough mapping (judge per ite
 | a `bug` item / diagnosing a failure | `debugging` |
 | hot paths, large data, latency budgets | `performance` |
 | user-facing copy, labels, error messages | `copywriting` |
+| UI scenarios in a browser-enabled project | `browser-testing` |
 
 See `.claude/practices/README.md`. An item may need none, one, or a few.
+
+**UI verification.** If `wiki/architecture.md` says browser testing is enabled and the spec
+has any `Scenario (UI):`, name `.claude/practices/browser-testing.md` (and `accessibility`) in
+the `test-writer` and `reviewer` prompts: the `test-writer` writes a Playwright test for each
+UI scenario, and the `reviewer` drives the running app via the Chrome DevTools MCP and attaches
+a screenshot. This rides the normal tests-first + reviewer steps — no separate stage. A browser
+failure loops back to the `implementer` like any review finding.
 
 ## Delegation prompt templates
 

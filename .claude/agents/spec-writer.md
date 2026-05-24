@@ -31,7 +31,10 @@ following the format in `wiki/specs/README.md`:
   `GIVEN/WHEN/THEN` scenario whose `THEN` is an **observable, testable** outcome. One
   scenario maps to one test. Be specific about inputs, outputs, edge cases, and error
   behaviour. This section is the contract. Reserve the keywords for genuine requirements
-  — do not MUST-ify ordinary prose.
+  — do not MUST-ify ordinary prose. When a scenario's outcome is a **rendered UI state**,
+  write it as `- Scenario (UI): <name>` with an observable `THEN` (visible element / text /
+  role) — a browser-enabled project verifies these in a real browser (see
+  `wiki/specs/README.md`).
 - **Out of scope** — what this item deliberately does not cover.
 - **Open questions** — classify **every** question as **blocking** or **non-blocking**,
   and report them with their classification. A blocking question means the spec MUST NOT

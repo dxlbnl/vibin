@@ -65,6 +65,11 @@ by the agent and skill definitions in `.claude/agents/` and `.claude/skills/`.
   change turns out bigger. A `bug` that fixes real behavior is always full. Lite is never a
   tests-first bypass for real behavior; `chore` is non-product work, `lite` is trivial product
   work.
+- **UI verification** — opt-in per project (frontend stacks, enabled at `/bootstrap`) and
+  dormant otherwise. A spec's `Scenario (UI):` entries are verified in a real browser via a
+  **proper tool** — a committed **Playwright** test and/or the **Chrome DevTools MCP** (the
+  reviewer drives the running app + captures a screenshot) — **never** ad-hoc `node`/`python`
+  browser scripts.
 - **No ad-hoc `node`/`python` invocations** — agents must not run `node -e ...`,
   `node <oneoff.js>`, `python -c ...`, `python <oneoff.py>`, or similar interpreter
   scripts as ad-hoc investigation or probing tools. The right tool for each pattern:

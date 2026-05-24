@@ -37,6 +37,11 @@ See `.claude/skills/tdd-cycle/SKILL.md` for the full discipline. Your job is the
    test by its requirement ID and scenario (e.g. `B3-R1 / happy-path`). A `MUST`
    scenario is mandatory; a `SHOULD` scenario is tested unless the spec explicitly
    waives it. Cover the golden path, edge cases, and error behaviour named in the spec.
+   - **UI scenarios** (`Scenario (UI):`) — if `wiki/architecture.md` says browser testing
+     is enabled, write a **Playwright** test that drives the app and asserts the observable
+     `THEN` **by role/text** (not pixels), per the `browser-testing` and `accessibility`
+     practices the manager named. If browser testing is **not** enabled, fall back to the
+     closest unit/DOM test and report that browser verification is unavailable.
 3. If this is a **`bug` item** (check the item card's `type:` field), a regression
    test for the specific reported failure is **mandatory**. Reproduce the failure
    first; only then write the test.

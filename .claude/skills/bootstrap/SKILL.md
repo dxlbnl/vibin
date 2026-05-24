@@ -112,11 +112,26 @@ they can add any pages they like. Do not proceed until they confirm.
   wiki-read instruction + role-specific guidance). Note: newly written agent files
   may not register until the next session.
 - **Tune the practice library** (`.claude/practices/`). The seed ships a stack-agnostic core
-  (security, accessibility, debugging, performance, copywriting). Keep the ones this project
-  needs (e.g. drop `accessibility` for a headless service), and **add project/stack-specific
-  practices** — `api-design` for an API, `data-modeling` for a DB-heavy app, `i18n`,
-  `marketing`, etc. — as new `.claude/practices/<name>.md` files following the same anatomy
-  (Knowledge / Rationalizations / Red flags / Verification). See `.claude/practices/README.md`.
+  (security, accessibility, debugging, performance, copywriting, browser-testing). Keep the
+  ones this project needs (e.g. drop `accessibility` for a headless service), and **add
+  project/stack-specific practices** — `api-design` for an API, `data-modeling` for a DB-heavy
+  app, `i18n`, `marketing`, etc. — as new `.claude/practices/<name>.md` files following the
+  same anatomy (Knowledge / Rationalizations / Red flags / Verification). See
+  `.claude/practices/README.md`.
+- **Browser testing** (UI verification) — opt-in, **off by default**.
+  - **Frontend project** (the stack ships a UI): keep `.claude/practices/browser-testing.md`;
+    scaffold **Playwright** (add the dep + a minimal committed `playwright.config.*`) and
+    append the matching permission entry to `.claude/settings.json` (e.g.
+    `Bash(npx playwright:*)` / `Bash(pnpm exec playwright:*)`); record in
+    `wiki/architecture.md` the **browser test command**, the app **run command**, and
+    **"browser testing: enabled"**; log a decision + a one-line Rule ("UI scenarios are
+    verified in a browser — Playwright in CI + Chrome DevTools MCP at review"). For the
+    **Chrome DevTools MCP** (environment config), **do not self-configure** — describe the
+    exact MCP-server setup and ask the user to apply it (see the env-config note below).
+    Optionally write a `browser-tester` specialist for heavy-UI projects; otherwise the
+    `reviewer` does the browser check.
+  - **Non-UI project**: `git rm .claude/practices/browser-testing.md` and add nothing else —
+    the capability stays dormant.
 
 For configuration that touches the user's environment, CI, or external services
 (secrets, repository settings, deploy targets), **do not run scripts or interpret

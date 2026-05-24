@@ -70,6 +70,12 @@ requirement ID is met.
 - **≥1 scenario** per requirement — each a `GIVEN / WHEN / THEN` with an **observable**
   outcome (a state or output a test can assert, never "feels fast"). A `MUST` scenario
   is mandatory; a `SHOULD` scenario is tested unless the spec explicitly waives it.
+- **UI scenarios** — when a scenario's `THEN` is a **rendered/observed browser outcome**,
+  tag it `- Scenario (UI): <name>` and make the `THEN` observable in the page (a visible
+  element / text / role / state, never "looks nice"). In a **browser-enabled** project (a
+  frontend stack — see `wiki/architecture.md`), a UI scenario is verified in a real browser:
+  a committed **Playwright** test plus a **Chrome DevTools MCP** smoke-check at review, with a
+  screenshot as evidence. In a non-browser project, write it as the closest unit/DOM test.
 
 ## Open questions are answered or deferred
 

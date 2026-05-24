@@ -59,6 +59,22 @@ IDs. Instead verify:
    exceeded the lite gate, **FAIL** with "needs the full track" so the manager promotes it to
    the full `spec-writer → test-writer → implementer → reviewer` pipeline.
 
+## Browser verification (UI items, when enabled)
+
+If `wiki/architecture.md` says browser testing is enabled and the spec has any
+`Scenario (UI):`, after the suite is green:
+
+1. **Launch the app** using `architecture.md`'s run command.
+2. **Drive it via the Chrome DevTools MCP tools** — walk each UI scenario's golden path and
+   key states (navigate, click, type, submit), and **assert the visible outcome by role/text**.
+3. **Inspect** for **console errors**, **failed network requests**, and obvious
+   **accessibility-tree** problems while you're there.
+4. **Capture a screenshot** of each verified state as evidence and cite it in your report.
+
+A browser failure (wrong/absent UI, a console/network error, an a11y problem) is a normal
+**FAIL** finding routed back to the implementer. If the Chrome DevTools MCP is not configured,
+the committed Playwright run is the floor — note the gap rather than skipping silently.
+
 ## Your report
 
 Return to the manager a clear verdict — **PASS** or **FAIL** — followed by findings.

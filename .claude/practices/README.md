@@ -22,6 +22,7 @@ Rough mapping (the manager judges per item — not a hard table):
 | a `bug` item / reproducing a failure | `debugging` |
 | hot paths, large data, latency budgets | `performance` |
 | user-facing copy, labels, error messages | `copywriting` |
+| UI scenarios in a browser-enabled project | `browser-testing` |
 
 ## Anatomy
 
