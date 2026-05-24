@@ -36,7 +36,6 @@ docs/proposals/NNNN-*.md  ─►  docs/proposals/implemented/NNNN-*.md
 | # | Proposal | Summary |
 |---|---|---|
 | 0002 | [Lite vs full pipeline](0002-lite-vs-full-pipeline.md) | A gated lite track so trivial, behavior-neutral product changes skip the full spec→tests→review ceremony. |
-| 0003 | [Skill library + anatomy](0003-skill-library-and-anatomy.md) | Rationalizations / Red-flags / Verification anatomy that hardens agents against shortcuts, plus a reusable practice-skill library. **(Phase 1 shipped as [migration 0004](../../migrations/0004-skill-anatomy.md); Phase 2 pending.)** |
 | 0004 | [interview-me](0004-interview-me.md) | One-question-at-a-time interviewing driving `/bootstrap` and `/intake` to high confidence before acting. |
 | 0005 | [Browser testing](0005-browser-testing.md) | Opt-in UI verification (Chrome DevTools MCP / Playwright) so "tests pass" is backed by "it works in a browser." |
 
@@ -45,6 +44,7 @@ docs/proposals/NNNN-*.md  ─►  docs/proposals/implemented/NNNN-*.md
 | # | Proposal | Shipped as |
 |---|---|---|
 | 0001 | [RFC-2119 specs](implemented/0001-rfc2119-specs.md) | [migration 0002](../../migrations/0002-rfc2119-specs.md) |
+| 0003 | [Skill library + anatomy](implemented/0003-skill-library-and-anatomy.md) | [migration 0004](../../migrations/0004-skill-anatomy.md) (Phase 1) + [migration 0006](../../migrations/0006-practice-library.md) (Phase 2) |
 
 ## Shipping a proposal (checklist)
 
@@ -66,22 +66,19 @@ When a proposal is implemented, do these in order (this is exactly how 0001 ship
 
 ## Roadmap
 
-Recommended order for the proposed designs. Each ships one-by-one via the checklist above;
-each carries open questions to settle at its own implementation time.
+Recommended order for the **remaining** proposed designs. Each ships one-by-one via the
+checklist above; each carries open questions to settle at its own implementation time.
 
-1. **0003 Phase 1 — skill anatomy** *(first up)*. Add Rationalizations / Red-flags /
-   Verification sections to `test-writer`, `implementer`, `reviewer` (and lightly
-   `spec-writer`), cross-referenced from `tdd-cycle`. Cheap, high value, mostly prompt edits,
-   independent of the others. No real fork to settle.
-2. **0004 — interview-me**. The one-adaptive-question discipline for `/bootstrap` Phase 1 and
-   `/intake`. Fork to settle: a standalone `.claude/skills/interview/SKILL.md` vs a shared
-   conventions section (the proposal leans standalone skill).
-3. **0002 — lite vs full pipeline**. The gated lite track across the manager, `/intake`,
+1. **0004 — interview-me** *(next up)*. The one-adaptive-question discipline for `/bootstrap`
+   Phase 1 and `/intake`. Fork to settle: a standalone `.claude/skills/interview/SKILL.md` vs
+   a shared conventions section (the proposal leans standalone skill).
+2. **0002 — lite vs full pipeline**. The gated lite track across the manager, `/intake`,
    `reviewer`, and the backlog schema. Forks: `mode: lite` flag vs a new `type:` (leans
    flag); the auto-promote-to-full rule.
-4. **0003 Phase 2 — practice-skill library** (`.claude/skills/practices/**`). Larger; builds
-   on Phase 1's anatomy. Forks: where practices live / how they register; manager-driven vs
-   agent-pulled loading (leans manager-driven); how much ships in the seed.
-5. **0005 — browser testing** *(last; largest, most uncertain)*. Opt-in UI verification wired
+3. **0005 — browser testing** *(last; largest, most uncertain)*. Opt-in UI verification wired
    by `/bootstrap` for frontend stacks. Big fork: Chrome DevTools MCP vs committed Playwright
    (possibly both); a separate stage vs folded into `reviewer`; how a spec marks "has UI".
+
+**Done:** 0001 (RFC-2119 specs → migration 0002); 0003 (skill anatomy → migration 0004,
+practice library → migration 0006). Out-of-band fix not from a proposal: open-questions
+resolution → migration 0005.

@@ -1,10 +1,9 @@
 # Proposal 0003 — Skill library + skill anatomy
 
-- **Status:** Phase 1 implemented (migration `0004`); Phase 2 (practice library) deferred —
-  see the roadmap in `docs/proposals/README.md`
+- **Status:** Implemented — Phase 1 → migration `0004`, Phase 2 → migration `0006`
 - **Date:** 2026-05-22
 - **Affects:** the agent/skill definitions, and a new reusable practice-skill library
-- **Ships as:** Phase 1 → migration `0004`; Phase 2 → a future `migrations/` entry
+- **Ships as:** Phase 1 → migration `0004`; Phase 2 → migration `0006`
 
 ## Context
 
