@@ -1,9 +1,9 @@
 # Proposal 0005 — Browser testing / UI verification
 
-- **Status:** Proposed (not yet implemented)
+- **Status:** Implemented — ships as migration `0009` (`migrations/0009-browser-testing.md`)
 - **Date:** 2026-05-22
 - **Affects:** the `reviewer` stage / a new specialist, `/bootstrap`, project permissions
-- **Ships as:** a future `migrations/` entry once implemented
+- **Ships as:** migration `0009`
 
 ## Context
 

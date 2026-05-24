@@ -35,7 +35,7 @@ docs/proposals/NNNN-*.md  ─►  docs/proposals/implemented/NNNN-*.md
 
 | # | Proposal | Summary |
 |---|---|---|
-| 0005 | [Browser testing](0005-browser-testing.md) | Opt-in UI verification (Chrome DevTools MCP / Playwright) so "tests pass" is backed by "it works in a browser." |
+| _none_ | — | All proposals to date are implemented. New designs land here as `docs/proposals/NNNN-*.md`. |
 
 ## Implemented
 
@@ -45,6 +45,7 @@ docs/proposals/NNNN-*.md  ─►  docs/proposals/implemented/NNNN-*.md
 | 0002 | [Lite vs full pipeline](implemented/0002-lite-vs-full-pipeline.md) | [migration 0008](../../migrations/0008-lite-pipeline.md) |
 | 0003 | [Skill library + anatomy](implemented/0003-skill-library-and-anatomy.md) | [migration 0004](../../migrations/0004-skill-anatomy.md) (Phase 1) + [migration 0006](../../migrations/0006-practice-library.md) (Phase 2) |
 | 0004 | [interview-me](implemented/0004-interview-me.md) | [migration 0007](../../migrations/0007-interview-me.md) |
+| 0005 | [Browser testing](implemented/0005-browser-testing.md) | [migration 0009](../../migrations/0009-browser-testing.md) |
 
 ## Shipping a proposal (checklist)
 
@@ -66,13 +67,16 @@ When a proposal is implemented, do these in order (this is exactly how 0001 ship
 
 ## Roadmap
 
-One proposed design remains. It ships via the checklist above; it carries open questions to
-settle at implementation time.
+**No proposals outstanding** — all of 0001–0005 are implemented:
 
-1. **0005 — browser testing** *(last; largest, most uncertain)*. Opt-in UI verification wired
-   by `/bootstrap` for frontend stacks. Big fork: Chrome DevTools MCP vs committed Playwright
-   (possibly both); a separate stage vs folded into `reviewer`; how a spec marks "has UI".
+- 0001 (RFC-2119 specs → migration 0002)
+- 0002 (lite pipeline → migration 0008)
+- 0003 (skill anatomy → migration 0004, practice library → migration 0006)
+- 0004 (interview-me → migration 0007)
+- 0005 (browser/UI verification → migration 0009)
 
-**Done:** 0001 (RFC-2119 specs → migration 0002); 0002 (lite pipeline → migration 0008);
-0003 (skill anatomy → migration 0004, practice library → migration 0006); 0004 (interview-me →
-migration 0007). Out-of-band fix not from a proposal: open-questions resolution → migration 0005.
+Out-of-band fix not from a proposal: open-questions resolution → migration 0005.
+
+The only design still parked (no proposal yet) is **delta / living-per-capability specs** —
+the real fix for behavioral-spec staleness; see the appendix of proposal 0001. New designs
+start as `docs/proposals/NNNN-*.md` and ship via the checklist above.
