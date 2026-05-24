@@ -44,8 +44,11 @@ restructure other pages freely.
   items between lanes via `git mv` — never copy-and-delete (the rename preserves
   history).
 - **Spec pages** — live in `wiki/specs/`, one per feature/bug item, following the
-  format in `wiki/specs/README.md`. Acceptance criteria must be **testable**. The
-  spec page is linked from its item card via the `spec:` frontmatter.
+  format in `wiki/specs/README.md`. Each spec **MUST** state its requirements with
+  stable `B<n>-R<k>` IDs, exactly one RFC-2119 keyword per requirement, and **≥1**
+  `GIVEN/WHEN/THEN` scenario each (one scenario → one test). A **blocking** open question
+  **MUST** flag the item `review` and stops it advancing to tests. The spec page is
+  linked from its item card via the `spec:` frontmatter.
 - **Decisions & rules** — `decisions.md` is the append-only rationale archive: never edit
   a past entry, supersede it with a new one and link both. An entry belongs there only if
   it establishes or changes a **standing constraint** (something future work must obey);

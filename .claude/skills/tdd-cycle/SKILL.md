@@ -15,8 +15,8 @@ agent prompts, so it runs whether or not anyone invokes this skill.
 
 ### RED — `test-writer`
 
-- Translate each acceptance criterion in `wiki/specs/<id>-<slug>.md` into one or more
-  tests.
+- Translate each requirement scenario in `wiki/specs/<id>-<slug>.md` into a test —
+  one test per scenario, named by requirement ID (e.g. `B<n>-R<k> / <scenario>`).
 - The tests **must fail** when first run — the feature does not exist yet.
 - Verify they fail for the **right reason** (feature missing, or, for a `bug` item,
   the reported failure reproduced), not because of a typo or a broken test harness.
@@ -53,7 +53,7 @@ counts as 'minimum'".
 
 ## Why tests first
 
-- The acceptance criteria become **executable** — "done" is objective.
+- The requirement scenarios become **executable** — "done" is objective.
 - The implementer gets an unambiguous target and a regression net.
 - The reviewer can verify against a concrete contract, not an opinion.
 

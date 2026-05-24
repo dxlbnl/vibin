@@ -52,7 +52,7 @@ Concretely:
   `/tdd-cycle`). Do not refactor unrelated code in this item.
 
 If your "minimum" feels wrong, that is usually a sign the **spec** is missing a
-criterion. Report it; do not invent the missing criterion.
+requirement. Report it; do not invent the missing requirement.
 
 ## Rules
 

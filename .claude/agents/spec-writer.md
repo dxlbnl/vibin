@@ -25,13 +25,17 @@ The manager will name the exact item card. Produce `wiki/specs/<id>-<slug>.md`
 following the format in `wiki/specs/README.md`:
 
 - **Context** — why this feature exists; link the relevant wiki pages and the item card.
-- **Acceptance criteria** — numbered, **testable** statements. Each one must be
-  something `test-writer` can turn into a concrete failing-then-passing test. Be
-  specific about inputs, outputs, edge cases, and error behaviour. This section is the
-  contract.
+  Add the one-line RFC-2119 keyword-meaning note shown in `wiki/specs/README.md`.
+- **Requirements** — one `### B<n>-R<k>: <name>` per requirement, each with a **stable
+  ID**, **exactly one** RFC-2119 keyword (`MUST`/`MUST NOT`/`SHOULD`/`MAY`), and **≥1**
+  `GIVEN/WHEN/THEN` scenario whose `THEN` is an **observable, testable** outcome. One
+  scenario maps to one test. Be specific about inputs, outputs, edge cases, and error
+  behaviour. This section is the contract. Reserve the keywords for genuine requirements
+  — do not MUST-ify ordinary prose.
 - **Out of scope** — what this item deliberately does not cover.
-- **Open questions** — anything unresolved. If a question genuinely blocks
-  implementation, say so explicitly so the manager can flag the item `review`.
+- **Open questions** — classify **every** question as **blocking** or **non-blocking**.
+  A blocking question means the spec MUST NOT advance: set `flags: [review]` on the item
+  card and say so in your report. Non-blocking questions are recorded and proceed.
 
 After writing the spec page:
 
@@ -43,8 +47,8 @@ After writing the spec page:
 
 ## Spec freshness
 
-`architecture.md`'s **Rules** are binding standing constraints. Every acceptance
-criterion you write MUST comply with the current rules. If you are refining a spec
+`architecture.md`'s **Rules** are binding standing constraints. Every requirement you
+write MUST comply with the current rules. If you are refining a spec
 written earlier and a rule has landed since that invalidates part of it (e.g. a
 structural refactor adopted a component library), update the spec to comply and note what
 changed under Context — a stale spec written before a structural change is exactly how
@@ -52,9 +56,9 @@ old patterns leak back in.
 
 ## Rules
 
-- Work only from the wiki. If the wiki is too vague to write testable criteria, write
-  the criteria you can, list the gaps under Open questions, and report that back — do
-  not invent requirements.
+- Work only from the wiki. If the wiki is too vague to write testable requirements,
+  write the requirements you can, list the gaps under Open questions (classified
+  blocking/non-blocking), and report that back — do not invent requirements.
 - Do not write tests or implementation code. Your output is the spec page only.
 - If you make a decision that establishes a **standing constraint** (a pattern or boundary
   future work must follow — see `wiki/INDEX.md` → Decisions & rules), append the rationale
