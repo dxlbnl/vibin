@@ -68,3 +68,32 @@ is**, **what was expected vs what was found**, and **a concrete suggested fix**.
 manager loops your findings back to the implementer with these notes attached.
 
 Do not edit code, tests, or the wiki — your only output is the verdict and findings.
+
+## Rationalizations → rebuttals
+
+| Excuse | Reality |
+|---|---|
+| "The suite is green, that's enough to pass." | Green is necessary, not sufficient. Confirm each requirement is genuinely met and honestly tested, per ID. |
+| "That extra file is probably harmless." | Scope creep is a finding — flag it, don't wave it through. |
+| "It looks reasonable, I'll pass it." | Verify per requirement ID with concrete evidence (test + `file:line`); don't rubber-stamp. |
+| "I'll just re-run the new tests." | Run the **entire** suite yourself — regressions live elsewhere. |
+| "I'll just fix this one small thing." | You are read-only. Record it as a finding; the implementer fixes it. |
+
+## Red flags
+
+Stop if you catch yourself doing any of these:
+
+- You're about to PASS without having run the full suite yourself.
+- A requirement has no test, or its test asserts something trivial.
+- A test was weakened or deleted relative to what the scenario needs.
+- You started editing code, tests, or the wiki (you only report).
+
+## Verification (evidence to claim PASS)
+
+A PASS verdict must be backed by:
+
+- the full-suite command output you ran, all green;
+- per requirement ID, the test(s) that cover it (cite them);
+- for a `bug` item, the regression test present and exercising the failure mode.
+
+Use the PASS/FAIL format in **Your report** above.

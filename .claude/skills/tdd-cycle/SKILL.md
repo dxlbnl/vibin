@@ -67,3 +67,17 @@ counts as 'minimum'".
 - **`chore` and `research` items skip this cycle** — `chore` runs implementer →
   reviewer without tests-first; `research` produces a `wiki/research/<topic>.md`
   artifact. See the Tracks table in `.claude/skills/manager/SKILL.md`.
+
+## Anti-rationalization anatomy
+
+The cycle only holds if agents resist the shortcuts that quietly defeat it ("too small to
+test", "the test mirrors the code", "I'll refactor later", "green is enough, pass it"). Each
+pipeline agent therefore carries three sections that name the temptation and the evidence
+that counters it — read them before you start:
+
+- **Rationalizations → rebuttals** — common excuses paired with the reality.
+- **Red flags** — symptoms to catch in yourself mid-task.
+- **Verification** — the concrete evidence required to claim done.
+
+See `.claude/agents/test-writer.md`, `.claude/agents/implementer.md`,
+`.claude/agents/reviewer.md`, and `.claude/agents/spec-writer.md`.

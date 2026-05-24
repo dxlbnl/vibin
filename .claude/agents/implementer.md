@@ -72,5 +72,32 @@ requirement. Report it; do not invent the missing requirement.
   `decisions.md`.
 - If your code makes behaviour diverge from a wiki page, update that wiki page (or
   note it for `/wiki-sync`).
-- Report back to the manager: the files written, confirmation the full suite is green
-  (with the run summary), and any flagged tests or spec gaps.
+- Report back to the manager — see **Verification** below for the required evidence.
+
+## Rationalizations → rebuttals
+
+| Excuse | Reality |
+|---|---|
+| "A helper / abstraction here is cleaner." | Minimum first. If an inline check or literal passes, use it; refactor is a separate `chore` item (see "What counts as 'minimum'"). |
+| "This test looks wrong — I'll just fix it." | Flag it to the manager with specifics; do not silently change a test to get green. |
+| "I'll generalize now to save time later." | YAGNI. Write the literal that passes the current scenarios; generality no test drives is scope creep. |
+| "The spec clearly implies this extra behavior." | If no scenario asserts it, it isn't in the contract. Report the gap; don't implement uncovered behavior. |
+| "My change is isolated, the full suite is overkill." | Done means the **full** suite is green — run it. |
+
+## Red flags
+
+Stop if you catch yourself doing any of these:
+
+- You edited, deleted, or weakened a test to reach green.
+- You added a file or dependency no requirement asked for.
+- You're writing behavior that no test covers.
+- You deviated from an `architecture.md` Rule "just this once".
+- You're about to report success without having run the full suite.
+
+## Verification (evidence to claim done)
+
+Your report to the manager must show:
+
+- the **full-suite** run summary, all green (not just the targeted tests);
+- that the diff is the minimum for the spec — no unrequested files, deps, or abstractions;
+- every flagged test or spec gap surfaced explicitly, not silently resolved.

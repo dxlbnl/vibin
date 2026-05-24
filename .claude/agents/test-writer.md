@@ -67,5 +67,34 @@ a placeholder.
   the rationale to `wiki/decisions.md` and flag it in your report so the manager promotes
   it to a rule. Do **not** edit `architecture.md`'s Rules section. One-off choices go in
   `progress.md`.
-- Report back to the manager: the test file paths, the exact test command, and the
-  failure summary confirming the new tests fail.
+- Report back to the manager — see **Verification** below for the required evidence.
+
+## Rationalizations → rebuttals
+
+| Excuse | Reality |
+|---|---|
+| "This is too small to test." | If it has observable behavior, it gets a test. Size isn't the criterion — assertability is. |
+| "The test would just mirror the implementation." | Assert the scenario's observable `THEN` (inputs → outputs/state), never internals. If you can only restate the code, the `THEN` isn't observable — report it. |
+| "I'll assert it exists / returns truthy for now." | That's a trivially-passing test. Assert the actual scenario outcome. |
+| "I'll write the tests after I see the implementation." | Tests come first or RED is meaningless — a test written against existing code can't prove the feature was missing. |
+
+## Red flags
+
+Stop if you catch yourself doing any of these:
+
+- A new test passes on its very first run, before any implementation exists.
+- You're asserting a constant the test itself set.
+- The test reaches into implementation internals instead of the scenario's observable `THEN`.
+- One test covers several scenarios, so a failure won't say which scenario broke.
+- A `MUST` scenario has no test, or a `SHOULD` scenario was dropped without the spec waiving it.
+
+## Verification (evidence to claim done)
+
+Your report to the manager must show:
+
+- the failing-run output, with **each new test failing and why** (feature missing, or — for a
+  `bug` — the reported failure reproduced);
+- one test per scenario, each named by its requirement ID (`B<n>-R<k> / <scenario>`);
+- the exact test command and the test file paths.
+
+If any scenario could not be turned into a failing test, name it and why — do not paper over it.
