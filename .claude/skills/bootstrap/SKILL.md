@@ -110,6 +110,12 @@ they can add any pages they like. Do not proceed until they confirm.
   `.claude/agents/<role>.md` file modeled on the core agents (frontmatter + STEP 0
   wiki-read instruction + role-specific guidance). Note: newly written agent files
   may not register until the next session.
+- **Tune the practice library** (`.claude/practices/`). The seed ships a stack-agnostic core
+  (security, accessibility, debugging, performance, copywriting). Keep the ones this project
+  needs (e.g. drop `accessibility` for a headless service), and **add project/stack-specific
+  practices** — `api-design` for an API, `data-modeling` for a DB-heavy app, `i18n`,
+  `marketing`, etc. — as new `.claude/practices/<name>.md` files following the same anatomy
+  (Knowledge / Rationalizations / Red flags / Verification). See `.claude/practices/README.md`.
 
 For configuration that touches the user's environment, CI, or external services
 (secrets, repository settings, deploy targets), **do not run scripts or interpret

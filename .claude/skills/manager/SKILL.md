@@ -164,9 +164,29 @@ inbox items:
 The draft spec the spec-writer already wrote persists (the card's `spec:` still points at it);
 bouncing only parks the **card**, it does not discard work.
 
+## Practices
+
+`.claude/practices/<name>.md` hold reusable, stack-agnostic **practice knowledge** (security,
+accessibility, debugging, performance, copywriting; a project may add more at bootstrap). They
+are loaded **on demand, manager-driven**: when dispatching an item, decide which practice(s)
+apply — from its `type:`, spec, and risk — and **name the file(s) in the delegation prompt**
+so the subagent reads only what's relevant. Load the **same** practice into the `reviewer` so
+it checks against it. Never load the whole library. Rough mapping (judge per item):
+
+| Signal on the item | Practice |
+|---|---|
+| auth, secrets, input handling, permissions | `security` |
+| any user-facing UI | `accessibility` |
+| a `bug` item / diagnosing a failure | `debugging` |
+| hot paths, large data, latency budgets | `performance` |
+| user-facing copy, labels, error messages | `copywriting` |
+
+See `.claude/practices/README.md`. An item may need none, one, or a few.
+
 ## Delegation prompt templates
 
-The exact files matter. Templates for each subagent:
+The exact files matter. Templates for each subagent. Where a practice applies, add a line:
+`Practices: read and apply .claude/practices/<name>.md` (omit when none applies).
 
 **spec-writer**:
 > Read `wiki/INDEX.md`, then `wiki/backlog/doing/<id>-<slug>.md` (the item card),
