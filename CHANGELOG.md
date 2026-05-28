@@ -35,13 +35,13 @@ following each affected migration's content-aware steps for the project's wiki, 
 
 ## Proposed / upcoming
 
-Designs not yet released live in [`docs/proposals/`](docs/proposals/) — see
+Designs are tracked in [`docs/proposals/`](docs/proposals/) — see
 [`docs/proposals/README.md`](docs/proposals/README.md) for the authoritative proposal index
 (proposed vs implemented), the shipping checklist, and the implementation roadmap. When a
 proposal ships it gets a `migrations/` entry and a row in the released table above.
 
-Currently proposed: **0002** lite vs full pipeline, **0003** skill library + anatomy,
-**0004** interview-me, **0005** browser testing.
+**No proposals outstanding** — all of `0001`–`0005` are implemented (see the index for the
+migration each shipped as).
 
 > Deferred (no proposal yet): **delta / living-per-capability specs** — the real fix for
 > behavioral-spec staleness, but a large change worth its own pass only when a project is big

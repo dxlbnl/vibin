@@ -14,12 +14,27 @@ backlog item depends on the item's `type:`.
 ```
 /bootstrap  →  wiki/ populated  →  manager  →  per item in wiki/backlog/:
                                                 dispatch on item type:
-                                                  feature  →  spec → tests → impl → review
-                                                  bug      →  spec → tests (incl. regression) → impl → review
-                                                  research →  researcher → review
-                                                  chore    →  impl → review
+                                                  feature              →  spec → tests → impl → review
+                                                  bug                  →  spec → tests (incl. regression) → impl → review
+                                                  research             →  researcher → review
+                                                  chore                →  impl → review
+                                                  feature/bug + lite   →  impl → review (lite)   ← gated: behavior-neutral changes only
                                                 → git mv to done/, commit, loop
 ```
+
+Cross-cutting machinery the manager uses while running an item:
+
+- **Spec open questions are answered or deferred** — never silently dropped. A blocking
+  question bounces the card to `wiki/backlog/inbox/` with `flags: [needs-answers]`; the
+  manager keeps working other items; you answer on the card and it resumes.
+- **Practices** — `.claude/practices/<name>.md` (security, accessibility, debugging,
+  performance, copywriting, browser-testing) are loaded on demand into the relevant
+  delegation prompts; never the whole library.
+- **Browser / UI verification** — opt-in for frontend projects (`/bootstrap` enables it).
+  Spec `Scenario (UI):` entries get a committed Playwright test plus a Chrome DevTools MCP
+  drive-and-screenshot at review.
+- **Interview discipline** — `/bootstrap` and `/intake` use a one-question-at-a-time
+  discipline to reach ~95% confidence before writing the wiki or an item card.
 
 Items live as per-item files under `wiki/backlog/<lane>/` (lanes: `inbox/` → `ready/`
 → `doing/` → `done/`). The manager moves cards with `git mv`, preserving history.
@@ -57,13 +72,18 @@ By default the manager runs **until blocked**. You're pulled in for:
 
 - the **initial work plan**, always;
 - any item flagged `review` in its card frontmatter (`flags: [review]`) — pauses
-  after the spec is written, before tests/impl; and
-- **escalations** (retry budget exhausted, second reviewer rejection).
+  after the spec is written, before tests/impl;
+- **escalations** (retry budget exhausted, second reviewer rejection); and
+- items the manager bounced to `wiki/backlog/inbox/` with `flags: [needs-answers]` — these
+  are waiting on your answers to **blocking open questions** written on the card. Answer in
+  the card and clear the flag (or move to `ready/`), and the item resumes from the spec.
 
 Everything else runs hands-off. Run `/status` any time to peek without disturbing
 the pipeline. If new work comes up mid-run, file it with `/intake` rather than
 asking the active agent to handle it inline — the new item flows through the normal
-spec → tests → review pipeline like everything else.
+spec → tests → review pipeline like everything else. An **answer to an open question** on
+the item the manager is actively working is *not* new work — it resolves the current spec
+(re-dispatched to `spec-writer`), never filed via `/intake`.
 
 ## Stack and package manager
 

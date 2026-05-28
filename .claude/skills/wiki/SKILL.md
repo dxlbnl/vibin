@@ -39,16 +39,16 @@ restructure other pages freely.
 - **Backlog items** — each is its own file at `wiki/backlog/<lane>/B<n>-<slug>.md`.
   Lane = directory (no `status:` field). Each item has a `type:`
   (`feature`/`bug`/`research`/`chore`) which selects the manager's track, and an
-  optional `flags:` list (`review` to pause for approval; `blocked` if stuck, with
-  a one-line reason in `## Notes`). File new work with `/intake`. The manager moves
-  items between lanes via `git mv` — never copy-and-delete (the rename preserves
-  history).
+  optional `flags:` list (`review` to pause for approval; `needs-answers` if awaiting user
+  answers on open questions; `blocked` if stuck, with a one-line reason in `## Notes`). File
+  new work with `/intake`. The manager moves items between lanes via `git mv` — never
+  copy-and-delete (the rename preserves history).
 - **Spec pages** — live in `wiki/specs/`, one per feature/bug item, following the
   format in `wiki/specs/README.md`. Each spec **MUST** state its requirements with
   stable `B<n>-R<k>` IDs, exactly one RFC-2119 keyword per requirement, and **≥1**
   `GIVEN/WHEN/THEN` scenario each (one scenario → one test). A **blocking** open question
-  **MUST** flag the item `review` and stops it advancing to tests. The spec page is
-  linked from its item card via the `spec:` frontmatter.
+  stops the item advancing — the manager bounces the card to `inbox/` with `needs-answers`.
+  The spec page is linked from its item card via the `spec:` frontmatter.
 - **Decisions & rules** — `decisions.md` is the append-only rationale archive: never edit
   a past entry, supersede it with a new one and link both. An entry belongs there only if
   it establishes or changes a **standing constraint** (something future work must obey);

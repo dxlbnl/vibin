@@ -201,7 +201,8 @@ bouncing only parks the **card**, it does not discard work.
 ## Practices
 
 `.claude/practices/<name>.md` hold reusable, stack-agnostic **practice knowledge** (security,
-accessibility, debugging, performance, copywriting; a project may add more at bootstrap). They
+accessibility, debugging, performance, copywriting, browser-testing; a project may add more at
+bootstrap). They
 are loaded **on demand, manager-driven**: when dispatching an item, decide which practice(s)
 apply — from its `type:`, spec, and risk — and **name the file(s) in the delegation prompt**
 so the subagent reads only what's relevant. Load the **same** practice into the `reviewer` so

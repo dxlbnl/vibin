@@ -52,8 +52,9 @@ The system SHOULD <single normative statement>.
 <what this item deliberately does not cover>
 
 ## Open questions
-<each question classified **blocking** or **non-blocking**; a blocking question means
-the item MUST be flagged `review` in its card and MUST NOT advance to test-writer>
+<each question classified **blocking** or **non-blocking**; a blocking question stops the
+item advancing — the manager flags the card `needs-answers` and bounces it to `inbox/` (the
+spec-writer does not re-flag); see "Open questions are answered or deferred" below>
 ```
 
 The requirements are the contract: `test-writer` turns each **scenario** into a failing

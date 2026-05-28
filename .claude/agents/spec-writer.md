@@ -94,7 +94,7 @@ old patterns leak back in.
 | Excuse | Reality |
 |---|---|
 | "Loose criteria are fine — the test-writer will figure it out." | Each requirement needs exactly one RFC-2119 keyword and ≥1 scenario with an observable `THEN`. Ambiguity here becomes a guessed test downstream. |
-| "This open question isn't really blocking." | If the answer would change what gets built, it's blocking: set `flags: [review]` and stop the item advancing. |
+| "This open question isn't really blocking." | If the answer would change what gets built, it's blocking — classify it that way and report it; the manager bounces the item to `inbox/` with `needs-answers` (you don't re-flag the card). |
 | "I'll fill the gap by inventing a requirement." | Work only from the wiki. List the gap under Open questions; don't invent. |
 
 ## Red flags
@@ -103,4 +103,5 @@ Stop if you catch yourself doing any of these:
 
 - A requirement with no scenario, or a `THEN` that isn't observable.
 - More than one RFC-2119 keyword in a single requirement.
-- A blocking open question left unclassified, or the item not flagged `review`.
+- A blocking open question left unclassified, or not surfaced in your report so the manager
+  can bounce the item with `needs-answers`.

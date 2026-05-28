@@ -35,11 +35,13 @@ Every agent reads this page first, before doing anything else.
 - **Backlog items**: live as per-item files under `wiki/backlog/<lane>/B<n>-<slug>.md`.
   Lane = directory (no `status:` field). Each item has a `type:` (feature / bug /
   research / chore) and an optional `flags:` list (`review` to pause for approval,
-  `blocked` if stuck). File new work with `/intake`; see `backlog/README.md`.
+  `needs-answers` if awaiting user answers on open questions, `blocked` if stuck). File new
+  work with `/intake`; see `backlog/README.md`.
 - **Spec pages**: live in `specs/`, one per feature/bug, named after the backlog item
   (e.g. `B3-user-login.md`). Specs **MUST** state requirements with stable IDs, one
-  RFC-2119 keyword each, and ≥1 `GIVEN/WHEN/THEN` scenario per requirement; a **blocking**
-  open question **MUST** flag the item `review`. See `specs/README.md`.
+  RFC-2119 keyword each, and ≥1 `GIVEN/WHEN/THEN` scenario per requirement. A **blocking**
+  open question stops the item advancing — the manager bounces the card to `inbox/` with
+  `flags: [needs-answers]`. See `specs/README.md`.
 - **Decisions & rules**: a choice that establishes a **standing constraint** (something
   future work must obey) is logged in `decisions.md` (the rationale, ADR-style) **and**
   appears as a one-line rule in `architecture.md`'s Rules section — the binding index
