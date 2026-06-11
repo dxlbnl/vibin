@@ -9,17 +9,23 @@ One atom = one idea, short, linked. This page is itself an atom, in the format a
 ```
 ---
 title: <short>
-type: principle | mechanism | decision | question
+type: principle | mechanism | decision | pattern | reference | question
 status: draft | accepted
+tags: [<topic>, <topic>]   # the retrieval trigger surface — matched against work items
 ---
 <2–6 sentences. Link related atoms inline with [label](other-atom.md).>
 
-**Why:** <the rationale / evidence, linking sources.>
+**Why:** <the rationale, stated inline; cite sources as breadcrumbs.>
 ```
 
 An atom is: short enough to read in one breath; has **one** canonical home (never a second copy); linked to its
 neighbours; and **replaced when wrong** — a superseded atom is *deleted* and its inbound links repointed to the
 replacement, not kept around ([the knowledge graph](the-graph.md)).
+
+Two lessons from the visuals migration: **`tags` are the trigger** — [retrieval](retrieval.md) matches them
+against work items to surface relevant atoms, so tag deliberately. And the **Why must carry the rationale
+inline** — cited sources (an old ADR, a research doc) may themselves be deleted later; a citation is a
+breadcrumb, never the only copy of the reasoning.
 
 Work items (epics / features / stories) are the graph's *transient* node kind — defined in
 [work items & the backlog](the-backlog.md); they carry proportional detail and are deleted when done, unlike the

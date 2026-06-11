@@ -1,49 +1,27 @@
-# Wiki Index
+# Wiki — index
 
-**This wiki is the single source of truth for the project. It is the spec.**
-Every agent reads this page first, before doing anything else.
+**The knowledge graph is the source of truth.** Read [knowledge/](knowledge/index.md) and the atoms
+relevant to your task **before** working. Work items live in [backlog/](backlog/). The v2 loop and
+operating rules are in [`../CLAUDE.md`](../CLAUDE.md).
 
-## How the workflow uses this wiki
+## Structure
 
-- The `manager` reads `backlog/` to decide what to build next, dispatching on each
-  item's `type:` (feature / bug / research / chore).
-- `spec-writer` turns a feature/bug backlog item into a testable spec page under
-  `specs/`.
-- `test-writer` writes failing tests from that spec page; `implementer` makes them
-  pass; `reviewer` verifies the result against this wiki.
-- When code and wiki disagree, the **wiki wins** — update the wiki (or run `/wiki-sync`).
+| Where | What |
+|---|---|
+| [knowledge/](knowledge/index.md) | **Durable, reusable knowledge** — short linked atoms. Start here; binding constraints live in `knowledge/project/the-rules.md`. |
+| [backlog/](backlog/) | **Work items** (cards, slug-named). A card *is* the spec — proportional detail, links to knowledge. Transient: deleted when done. |
+| [sprint.md](sprint.md) | **Current sprint** — active tasks + disposable run log. Resume from here. |
 
-## Pages
+## How work runs (v2)
 
-| Page | Purpose |
-|------|---------|
-| [vision.md](vision.md) | What the project is and why it exists. |
-| [requirements.md](requirements.md) | Functional requirements and constraints. |
-| [architecture.md](architecture.md) | Tech stack, package manager, test setup, structure, and the binding **Rules** index. |
-| [backlog/](backlog/) | Work items, arranged in four lanes (inbox → ready → doing → done). See `backlog/README.md`. |
-| [decisions.md](decisions.md) | Append-only decision log (ADR-style). |
-| [progress.md](progress.md) | Append-only run journal — what the agents have done. |
-| [specs/](specs/) | One detailed spec page per feature/bug. See `specs/README.md`. |
-
-> The wiki is **open-ended**. Only this `INDEX.md` is structurally required. Add, split,
-> and restructure pages as the project grows — just link new pages in the table above.
+Run an item with the **`loop`** skill: retrieve atoms → do it inline (right-sized) → verify → capture
+learnings as atoms → review → close (delete the card). Agents: **`reviewer`** (independent check),
+**`researcher`** (research → atoms). There is no spec→test→implement relay: the card is the spec, the
+tests are the spec, the capture gate makes learning stick.
 
 ## Conventions
 
-- **Adding a page**: create `wiki/<name>.md` (or `wiki/specs/<feature>.md`) and add a row
-  to the Pages table above so it is discoverable. Unlinked pages are invisible.
-- **Backlog items**: live as per-item files under `wiki/backlog/<lane>/B<n>-<slug>.md`.
-  Lane = directory (no `status:` field). Each item has a `type:` (feature / bug /
-  research / chore) and an optional `flags:` list (`review` to pause for approval,
-  `blocked` if stuck). File new work with `/intake`; see `backlog/README.md`.
-- **Spec pages**: live in `specs/`, one per feature/bug, named after the backlog item
-  (e.g. `B3-user-login.md`). Specs **MUST** state requirements with stable IDs, one
-  RFC-2119 keyword each, and ≥1 `GIVEN/WHEN/THEN` scenario per requirement; a **blocking**
-  open question **MUST** flag the item `review`. See `specs/README.md`.
-- **Decisions & rules**: a choice that establishes a **standing constraint** (something
-  future work must obey) is logged in `decisions.md` (the rationale, ADR-style) **and**
-  appears as a one-line rule in `architecture.md`'s Rules section — the binding index
-  agents read before coding, maintained by the manager. Local, one-off choices go in
-  `progress.md`, not `decisions.md`.
-- **Progress**: the `manager` appends to `progress.md` as items move through the
-  pipeline, so the run is auditable.
+- One canonical home per fact; links flow **work → knowledge**, never the reverse; replace
+  (delete + repoint) when wrong.
+- Knowledge in atoms, **never** native memory. Keep atoms and cards short.
+- New work mid-task → `/intake` a card; don't inline-patch.

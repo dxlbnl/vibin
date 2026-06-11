@@ -23,6 +23,14 @@ The wiki is the spec; the implementation is Claude Code machinery. Every mechani
 on one real task; then the light track + a verify gate; then the rest as needed — strangling old Vibin in place
 ([open questions](open-questions.md)). Seed an existing project's wiki with [bootstrapping](bootstrapping-the-web.md).
 
+**Status:** built and proven in the **visuals (Fosfor) testbed** — knowledge graph (21 atoms, 7 groups),
+hooks (knowledge gate, capture, retrieval suggester, session injection), loop/intake/status skills,
+reviewer + researcher agents, sprint file. First real task (tap-tempo smoothing) ran the full loop:
+retrieve → fix → atom updated in place → card deleted. **Next: backport into the Vibin seed** — the manual
+migration taught the bootstrap heuristics (keep durable knowledge + binding rules verbatim; drop audit
+narration; fold research verdicts into atoms; honour supersessions — an overruled recommendation must not
+survive as guidance).
+
 **Ongoing:** new skills/rules are **authored** (a curated library) or **evolved from use** via the
 [retro](the-retro.md) — concrete steps, human-reviewed ([self-improvement](self-improvement.md)), never automatic.
 

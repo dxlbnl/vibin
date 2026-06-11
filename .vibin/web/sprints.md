@@ -1,7 +1,7 @@
 ---
 title: Sprints (the rolling working state)
 type: mechanism
-status: draft
+status: accepted
 ---
 
 Work is organised as **rolling sprints**, not an ever-growing spec'd backlog. The working state is the *current*
@@ -15,4 +15,5 @@ kept in **one file** (e.g. `sprint.md` in the project) — and nothing else.
 
 **Why:** the two-tier rule — the **wiki survives, the sprint is scratch.** The only thing that must outlive a
 sprint is what reached the wiki ([what belongs](what-belongs.md)). See [the work loop](the-work-loop.md) for how
-tasks in a sprint are run.
+tasks in a sprint are run. Implemented in the visuals testbed as `wiki/sprint.md`: resume by reading it; log
+one-liners as you go; retro → trim to nothing at close.
