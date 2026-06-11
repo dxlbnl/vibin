@@ -15,9 +15,15 @@ status: draft
 - A second copy of an existing atom — reconcile, don't duplicate ([the atom](the-atom.md), one home).
 - Per-task ceremony kept forever — the old kanban graveyard ([pains P6/P9/P11](../research/vibin-painpoints.md)).
 
-**Budgets** (leanness is measured, see [onboarding agents & skills](onboarding-agents-and-skills.md)): an atom
-is short; the *always-on* footprint (agent descriptions, enabled MCP tools, `CLAUDE.md`) stays small; the skill
+*Work items* (the [backlog](the-backlog.md)) also live in the graph but are **transient** scaffolding, deleted
+when done — this page governs the durable knowledge nodes.
+
+**Wiki only, never native memory.** All knowledge lives in wiki atoms — visible, in-repo, reviewable. Claude's
+native `~/.claude/.../memory/` is **opaque** and per-machine; do not use it for project knowledge.
+
+**Budgets** (leanness is measured, see [onboarding agents & skills](onboarding-agents-and-skills.md)): an atom is
+short; the *always-on* footprint (agent descriptions, enabled MCP tools, `CLAUDE.md`) stays small; the skill
 library is lazy.
 
-**Why:** the wiki is useful only if it is *small and true*. Completeness is not a goal; usefulness is —
-enforced by [retrieval](retrieval.md) (unread atoms get pruned).
+**Why:** the wiki is useful only if it is *small and true*. Completeness is not a goal; usefulness is — enforced
+by [retrieval](retrieval.md) (unread atoms get pruned).

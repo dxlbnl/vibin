@@ -4,14 +4,16 @@ type: mechanism
 status: draft
 ---
 
-The system should improve its **own** rules and tools, not just the product. When a pattern recurs, it
-*proposes* a new [rule](the-rules.md), [skill](onboarding-agents-and-skills.md), or [atom](the-atom.md).
+Skills and rules come from two places — and **neither is magic**:
 
-- A **trip-wire**: when the Nth task touches the same surface or repeats a fix, flag it — propose a
-  consolidating rule/skill instead of patching again.
-- Promotion by evidence: a cross-project pattern that recurs (and isn't corrected) earns confidence and may
-  graduate to a skill ([two kinds of knowledge](the-atom.md)).
-- Proposals are reviewed, not auto-applied — the human keeps the gate ([safe autonomy](safe-autonomy.md)).
+1. **Authored** — a curated library of great skills/rules, written or ported deliberately
+   ([onboarding](onboarding-agents-and-skills.md)). This is the primary, most valuable source; a strong library
+   is an asset on its own.
+2. **Evolved from use** — when a pattern recurs, *someone proposes* a consolidating rule / skill /
+   [atom](the-atom.md). The proposer is concrete, not automatic: the **[retro](the-retro.md)** at sprint close,
+   a **hook** that flags a repeated fix or surface (the trip-wire), or the human. Every proposal is
+   **human-reviewed**, never auto-applied ([safe autonomy](safe-autonomy.md)).
 
 **Why:** [pain P4](../research/vibin-painpoints.md) — the override contract was relitigated **four times**
-(B12 → B53 → B134 → B136). A trip-wire would have caught the recurrence and forced one consolidating decision.
+(B12 → B53 → B134 → B136). A retro or a trip-wire would have caught the recurrence and forced one consolidating
+decision — but only because a *concrete step* runs, not because the wiki improves itself by wishing.

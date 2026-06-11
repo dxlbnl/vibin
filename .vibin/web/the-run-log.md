@@ -5,7 +5,8 @@ status: draft
 ---
 
 The run log is the **disposable** tier: a live, append-as-you-go record of what is happening *this
-[sprint](sprints.md)* — for resumability and orientation, not for posterity.
+[sprint](sprints.md)* — for resumability and orientation, not for posterity. It lives **inside the sprint file**,
+not in a separate growing journal.
 
 - It MAY be freely compressed, trimmed, or **discarded** once its knowledge is captured into the wiki.
 - There is **no** requirement to preserve a complete history — audit-trail completeness is not a goal

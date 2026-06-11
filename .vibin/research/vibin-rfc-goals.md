@@ -1,6 +1,11 @@
 # RFC: What Vibin Should Be
 
-**Status:** Draft / direction-setting. Goals, not implementation design.
+> **SUPERSEDED (2026-06-11).** This flat-goals draft is replaced by the knowledge wiki at
+> [`.vibin/web/`](../web/index.md), which reorganises these goals as short linked atoms. The one goal not
+> carried over — G14 (spawn handoff: pass the "why" + ≤3 follow-ups) — now lives in
+> [`cost-and-models`](../web/cost-and-models.md). Kept for history; safe to delete.
+
+**Status:** Superseded by `.vibin/web/`. (Originally: draft / direction-setting.)
 **Inputs:** [[vibin-painpoints]] (the 11 pains) + a deep read of `affaan-m/ECC`
 (212K★ agent system; mined for *mechanisms*, not its kitchen-sink scale).
 **Requirements language:** MUST / MUST NOT / SHOULD / MAY per RFC 2119.

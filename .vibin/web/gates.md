@@ -16,5 +16,4 @@ Gates are *enforced* checkpoints (hooks), not etiquette. The wiki stays honest o
 
 A gate must be **near-free**, or agents route around it (and it slows the loop — [pain P2](../research/vibin-painpoints.md)).
 
-**Why:** the loop only happens if it is enforced, not hoped for. [Pains P6 (no capture) and
-P7](../research/vibin-painpoints.md) (red tests rode through 6 "done" items) are both missing-gate failures.
+**Why:** the loop only happens if it is enforced, not hoped for. [Pains P6 (no capture) and P7](../research/vibin-painpoints.md) (red tests rode through 6 "done" items) are both missing-gate failures.

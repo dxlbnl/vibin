@@ -13,6 +13,9 @@ workflow ([pain P1](../research/vibin-painpoints.md)).
 - The wiki is naturally mergeable: separate atoms are separate files; only a genuine edit to the *same* atom
   conflicts ([the knowledge graph](the-graph.md)).
 - Worktrees for parallel agents are fine but used "out of true necessity," not by default.
+- **A branch carries a [sprint](sprints.md)** — merge it when the sprint **concludes** ([retro](the-retro.md)
+  done, learnings captured), not mid-sprint. Parallel work = parallel sprints on their own branches, each merging
+  at its own close.
 
 **Why:** P1 — old Vibin's IDs and four monolithic append-files guaranteed a conflict on every parallel item.
 Structure the state so branches don't collide, instead of asking humans to avoid it.
