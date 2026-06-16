@@ -6,7 +6,7 @@ Stop hook: the `loop` skill's sprint-close/retro step has no automated trigger
 wiki/sprint.md's task list is non-empty and EVERY task is checked (`- [x]`)
 with none still open (`- [ ]`), prompt the agent to run the retro before
 finishing — capture learnings as atoms, delete the done cards, ARCHIVE the
-sprint (composed at close from real artifacts), then clear the sprint.
+sprint (preserve the append-only run log + enrich), then clear the sprint.
 
 This is a NUDGE, the same altitude as the capture gate — one reminder, not a
 hard block. The empty/clean sprint (its `- [ ] (pull cards…)` placeholder
@@ -31,8 +31,8 @@ PROMPT = (
     "Vibin sprint-close — every task in wiki/sprint.md is checked, but the sprint isn't closed. "
     "Run the retro before finishing: (1) capture any durable learnings as knowledge atoms; "
     "(2) delete the completed backlog cards; (3) archive the sprint to "
-    "wiki/sprint-archive/NNNN-slug.md — COMPOSE it at close from the sprint goal, the closed "
-    "cards, the captured atoms, and `git log` (don't rely on the run log alone); (4) clear "
+    "wiki/sprint-archive/NNNN-slug.md — PRESERVE the append-only run log as the spine and enrich it "
+    "with the sprint goal, the closed cards, and links to the captured atoms; (4) clear "
     "wiki/sprint.md for the next sprint. The archive is the write-once ledger; the wiki keeps the "
     "learnings. Then finish.\n"
 )

@@ -13,8 +13,9 @@ relay: the card is the spec, tests are the spec, and you do the work yourself. O
 `wiki/sprint.md` is the one working-state file: the sprint's task list + a disposable run log.
 - **Resuming**: read `wiki/sprint.md` first — it says what's in flight. Tasks remain → continue them.
   No sprint file or all tasks done → run **Sprint start** (below) before touching any card.
-- **Log as you go**: append one-liners to the run log at meaningful steps — it's scratch for
-  resumability, freely trimmable, deleted at sprint close. Knowledge does NOT live here.
+- **Log as you go**: the run log is **append-only** — add one-liners at meaningful steps; never
+  overwrite or trim entries mid-sprint (it's the narrative the archive preserves). Put a short
+  **Next** pointer just below the Tasks for resumability — not in the log. Knowledge does NOT live here.
 
 ## Sprint start — plan, then get the go-ahead
 The **sprint boundary is the checkpoint**; the sprint interior is autonomous. Don't plow from "what's
@@ -58,12 +59,13 @@ when every task is checked:
   first need); a process fix → propose it to the user.
 - Confirm all learnings reached the wiki.
 - **Archive the sprint** to `wiki/sprint-archive/NNNN-slug.md` (next number, slug from the goal).
-  **Compose it at close** from real artifacts — the sprint goal, the cards you closed, the atoms you
-  captured, and `git log` for the sprint — *not* from the run log alone (the run log is sparse
-  scratch by design). The archive is the **write-once ledger**: what shipped, when; one bounded file
-  per sprint, never appended to after close.
-- Then **clear `wiki/sprint.md`** (run log to nothing, task list reset) for the next sprint. Three
-  tiers: the wiki keeps the *learnings*, the archive keeps the *ledger*, the sprint file is *scratch*.
+  **Preserve the append-only run log** as the spine and enrich it with the sprint goal, the cards you
+  closed, and links to the atoms you captured (don't reconstruct from `git log` + cards alone — that
+  drops the in-flight gotcha-and-fix tier only the log carries). The archive is the **write-once
+  ledger**: what shipped, when; one bounded file per sprint, never appended to after close.
+- Then **clear `wiki/sprint.md`** (run log and task list reset) for the next sprint. Three tiers: the
+  wiki keeps the *learnings*, the archive keeps the *ledger* (the preserved narrative), the sprint
+  file is the *live working state*.
 
 ## Rules
 - Knowledge lives in `wiki/knowledge/` atoms — **never** native memory, never the sprint log.

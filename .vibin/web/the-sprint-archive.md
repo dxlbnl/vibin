@@ -7,13 +7,13 @@ status: draft
 The **third tier** of the working state: a bounded, **write-once** record of each closed
 [sprint](sprints.md) — one file per sprint at `wiki/sprint-archive/NNNN-slug.md`. It answers *what
 shipped, and when*, the chronology the wiki deliberately omits. Distinct from the two other tiers:
-the [wiki](the-graph.md) keeps timeless **learnings**, the [run log](the-run-log.md) is disposable
-**scratch**, and the archive is the durable **ledger**.
+the [wiki](the-graph.md) keeps timeless **learnings**, the [run log](the-run-log.md) is the live
+append-only **narrative**, and the archive is the durable **ledger**.
 
-- **Composed at close, not transcribed.** Built once during the [retro](the-retro.md) from real
-  artifacts — the sprint goal, the cards that closed, the atoms that were captured, and `git log` for
-  the sprint — *not* from the run log (which is sparse by design). This is why it stays complete while
-  the log stays near-free.
+- **The run log is the spine; enrich, don't reconstruct.** Built once during the [retro](the-retro.md)
+  by **preserving the sprint's append-only [run log](the-run-log.md)** (the in-flight narrative) and
+  enriching it with the goal, the cards that closed, and links to the atoms captured. Reconstructing
+  from `git log` + cards alone would drop the situational gotcha-and-fix tier only the log carries.
 - **Write-once and bounded.** One file per sprint, never appended to after close. That is what keeps
   it from becoming old Vibin's append-forever journal ([pain P3](../research/vibin-painpoints.md)) — a
   ledger of bounded files, not one growing log.

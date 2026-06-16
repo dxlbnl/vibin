@@ -15,9 +15,10 @@ kept in **one file** (e.g. `sprint.md` in the project) — and nothing else.
 - The backlog stays small and current, not a 120-card archive ([pains P6/P8/P9](../research/vibin-painpoints.md)).
 
 **Why:** the **three-tier rule** — the **wiki keeps the *learnings*** (timeless), [the archive](the-sprint-archive.md)
-**keeps the *ledger*** (what shipped, when — write-once per sprint), and **the sprint file is *scratch***. The
+**keeps the *ledger*** (what shipped, when — write-once per sprint), and **the sprint file is the *live state*** (cleared at close). The
 learnings that must outlive a sprint reach the wiki ([what belongs](what-belongs.md)); the chronology the wiki
 deliberately omits is the archive's job. (Earlier this was a two-tier rule with finished sprints simply *gone*;
 the archive was added back as a bounded ledger — write-once, never the append-forever journal of [pain P3](the-run-log.md).)
-See [the work loop](the-work-loop.md) for how tasks in a sprint are run. Implemented as `wiki/sprint.md`: resume by
-reading it; log one-liners as you go; retro → archive (composed at close) → clear.
+See [the work loop](the-work-loop.md) for how tasks in a sprint are run. Implemented as `wiki/sprint.md`: resume
+from its **Next** pointer; append to the run log as you go; retro → archive (preserve the log, enrich with
+goal/cards/atoms) → clear.

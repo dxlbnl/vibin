@@ -26,7 +26,7 @@ then [the loop](the-loop.md) and [the work loop](the-work-loop.md).
 ## Process & working state
 - [sprints](sprints.md) — the rolling working state.
 - [work items & the backlog](the-backlog.md) — work nodes in the graph (epic/feature/story), deleted when done.
-- [the run log](the-run-log.md) — disposable scratch.
+- [the run log](the-run-log.md) — the append-only sprint narrative.
 - [the sprint archive](the-sprint-archive.md) — the write-once ledger of closed sprints.
 - [the retro](the-retro.md) — learn at sprint close; feeds self-improvement.
 - [right-sizing](right-sizing.md) — ceremony matched to the stakes.
