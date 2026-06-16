@@ -11,11 +11,21 @@ relay: the card is the spec, tests are the spec, and you do the work yourself. O
 
 ## Working state — the sprint
 `wiki/sprint.md` is the one working-state file: the sprint's task list + a disposable run log.
-- **Resuming**: read `wiki/sprint.md` first — it says what's in flight. No sprint file or all tasks
-  done → start/refill the sprint by pulling cards from `wiki/backlog/` (ask the user which, unless
-  obvious by priority).
+- **Resuming**: read `wiki/sprint.md` first — it says what's in flight. Tasks remain → continue them.
+  No sprint file or all tasks done → run **Sprint start** (below) before touching any card.
 - **Log as you go**: append one-liners to the run log at meaningful steps — it's scratch for
   resumability, freely trimmable, deleted at sprint close. Knowledge does NOT live here.
+
+## Sprint start — plan, then get the go-ahead
+The **sprint boundary is the checkpoint**; the sprint interior is autonomous. Don't plow from "what's
+this sprint about?" straight into execution — compose the plan and **hard-pause** for a nod first:
+1. **Goal** — settle the one-line sprint goal with the user (a short conversation is fine).
+2. **Compose** — pick the candidate cards from `wiki/backlog/` and write the plan **into**
+   `wiki/sprint.md`: the goal + the task list (slugs) + rough order. `sprint.md` *is* the plan.
+3. **Show + wait** — present the composed sprint (goal, the cards = the workload, order) and **wait for
+   an explicit go-ahead** before running any card. The user may swap / drop / reorder. This is the one
+   blocking checkpoint per sprint — cheap to eyeball, and a mis-composed sprint is the costliest miss.
+4. On go-ahead → run the items (**Per item**, below), interior autonomous until blocked.
 
 ## Per item
 
@@ -40,13 +50,20 @@ relay: the card is the spec, tests are the spec, and you do the work yourself. O
 8. **Close** — delete the card (learnings are now atoms), tick the sprint task, log one line. Commit
    `<slug>: <title>` **only when the user asks**.
 
-## Sprint close — the retro
-When the sprint's tasks are done (or the user calls it):
+## Sprint close — the retro + archive
+When the sprint's tasks are done (or the user calls it) — the sprint-close hook nudges you here once
+when every task is checked:
 - **Retro, briefly**: what went well / what dragged / what recurred. A durable lesson → an atom; a
   recurring failure-shape → flag it in a `wiki/knowledge/project/known-issues.md` atom (create on
   first need); a process fix → propose it to the user.
-- Confirm all learnings reached the wiki, then **trim the run log to nothing** and clear the task
-  list. The wiki is the keeper; the sprint is scratch.
+- Confirm all learnings reached the wiki.
+- **Archive the sprint** to `wiki/sprint-archive/NNNN-slug.md` (next number, slug from the goal).
+  **Compose it at close** from real artifacts — the sprint goal, the cards you closed, the atoms you
+  captured, and `git log` for the sprint — *not* from the run log alone (the run log is sparse
+  scratch by design). The archive is the **write-once ledger**: what shipped, when; one bounded file
+  per sprint, never appended to after close.
+- Then **clear `wiki/sprint.md`** (run log to nothing, task list reset) for the next sprint. Three
+  tiers: the wiki keeps the *learnings*, the archive keeps the *ledger*, the sprint file is *scratch*.
 
 ## Rules
 - Knowledge lives in `wiki/knowledge/` atoms — **never** native memory, never the sprint log.
@@ -54,4 +71,6 @@ When the sprint's tasks are done (or the user calls it):
   (delete + repoint) when wrong.
 - New work discovered mid-task → `/intake` a card (slug-named); don't inline-patch.
 - Research items → spawn the `researcher` agent (writes atoms, no code).
-- Run until blocked: keep pulling items until the sprint is done, a `review` card, or a real fork.
+- Run until blocked **within** an agreed sprint: once the user has OK'd the plan (**Sprint start**),
+  keep pulling items until the sprint is done, a `review` card, or a real fork. Composing a *new*
+  sprint is itself a boundary — stop and get the go-ahead, don't auto-start the next one.

@@ -12,6 +12,9 @@ Gates are *enforced* checkpoints (hooks), not etiquette. The wiki stays honest o
   invalidate every actor's marker; card/backlog edits do not.
 - **Capture-before-close** — the keystone ([capture](capture.md)): a Stop is blocked once while product
   code changed and no atom was written. Replaces the audit log with a *learning* requirement.
+- **Sprint-close** — a Stop **nudge** (not a hard block) that fires once when every task in `sprint.md` is
+  checked and none are open: run the retro, capture learnings, **archive** the sprint
+  ([the archive](the-sprint-archive.md)), then clear the file. Same near-free altitude as capture.
 - **Right-size** — heavy ceremony only for risky/irreversible work; otherwise the **test is the spec**
   ([right-sizing](right-sizing.md)).
 - **Green-means-green** — no task closes with known-red tests; a persistent failure becomes its own item
@@ -22,8 +25,8 @@ A gate must be **near-free**, or agents route around it ([pain P2](../research/v
 edits never trigger it — false nudges are how a gate loses its authority.
 
 **Why:** the loop only happens if it is enforced, not hoped for. [Pains P6 and
-P7](../research/vibin-painpoints.md) are both missing-gate failures. The first three gates are implemented
-as hooks (visuals testbed + the seed); green-means-green is currently convention in the loop skill + reviewer.
+P7](../research/vibin-painpoints.md) are both missing-gate failures. Knowledge, capture, and sprint-close are
+implemented as hooks (the seed); right-size and green-means-green are currently convention in the loop skill + reviewer.
 
 **Ops lesson (learned the hard way):** replace a hook script by **writing over it in place — never
 delete-then-recreate**. The harness caches hook config per session; a missing script exits 2 and

@@ -8,6 +8,9 @@ Agents can run unattended — within guardrails, with the human holding a clear 
 
 - **Autonomy dial** — run-until-blocked for routine work; **stop and ask** at risk, ambiguity, or an
   architectural fork ([right-sizing](right-sizing.md) heavy path).
+- **The sprint boundary is the standing checkpoint** — composing a [sprint](sprints.md) hard-pauses for
+  a go-ahead (goal + the cards = the workload, shown before any run); the *interior* is then autonomous.
+  One nod buys a whole sprint of trusted run-until-blocked — and protects it.
 - **Security is a standing concern** — secrets never enter the wiki or logs; least-privilege tool permissions;
   don't execute untrusted code; supply-chain caution.
 - **The human steers mid-flight** — a conversation ([the conversational track](the-conversational-track.md)) or
