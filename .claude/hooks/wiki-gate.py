@@ -27,6 +27,7 @@ harness caches hook config per session, and a missing script hard-blocks every t
 import json
 import os
 import shlex
+import subprocess
 import sys
 import time
 
@@ -42,6 +43,22 @@ UNSAFE_SHELL_FEATURES = (
 
 def project_dir(data):
     return os.environ.get("CLAUDE_PROJECT_DIR") or data.get("cwd") or os.getcwd()
+
+
+def worktree_knowledge_dirs(proj):
+    """Return wiki/knowledge/ paths for all active git worktrees."""
+    try:
+        result = subprocess.run(
+            ["git", "worktree", "list", "--porcelain"],
+            capture_output=True, text=True, timeout=5, cwd=proj,
+        )
+        roots = []
+        for line in result.stdout.splitlines():
+            if line.startswith("worktree "):
+                roots.append(line[9:])
+        return [os.path.join(r, "wiki", "knowledge") for r in roots]
+    except Exception:
+        return []
 
 
 def tool_target(tool_name, tool_input):
@@ -163,6 +180,7 @@ def main():
     target_is_knowledge = bool(target_abs) and (
         is_under(target_abs, know_dir)
         or os.path.realpath(target_abs) == os.path.realpath(index_md)
+        or any(is_under(target_abs, wk) for wk in worktree_knowledge_dirs(proj))
     )
     target_in_project = bool(target_abs) and is_under(target_abs, proj)
 

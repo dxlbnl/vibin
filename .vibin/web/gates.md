@@ -20,6 +20,27 @@ Gates are *enforced* checkpoints (hooks), not etiquette. The wiki stays honest o
 - **Green-means-green** — no task closes with known-red tests; a persistent failure becomes its own item
   ([verification](verification.md)).
 
+**Knowledge gate: diff on stale, hard block only on missing.** The gate distinguishes two stale
+states. *Missing marker* (actor never read the knowledge) → hard block: the actor has no baseline,
+work must not proceed. *Stale marker* (knowledge changed since last read) → inject a diff of the
+changed atoms as advisory context and exit 0, letting the actor judge relevance. An actor working
+on UI who sees a stale `bunq-rate-limits.md` can carry on; one who sees a stale `money-model.md`
+knows to re-read. Judgment calls cannot be gated mechanically.
+
+**The gate is worktree-aware.** For [parallel sprints](parallel-sprints.md), each sprint-runner
+agent operates inside a git worktree with `CLAUDE_PROJECT_DIR` pointing to the main project. The
+gate calls `git worktree list --porcelain` to enumerate all active worktree roots and accepts reads
+and writes under any of their `wiki/knowledge/` directories. This means a sprint-runner reading
+`.vibin/sprint/014/wiki/knowledge/index.md` satisfies the gate without touching the main project's
+copy. The freshness check (newest mtime) also runs per-worktree knowledge dir.
+
+**Subagents start cold.** A spawned subagent (Agent/Task) has a fresh `agent_id` with no gate
+marker — its first Write or Bash is hard-blocked even if the parent session's gate is satisfied.
+Two fixes: (1) instruct the subagent in its prompt to read `wiki/knowledge/index.md` and relevant
+atoms before any other action; (2) do the work inline in the parent session, which already has a
+fresh marker. Prefer (2) for tasks that fit in the main context; prefer (1) for agents that
+genuinely need isolation (reviewer, researcher, [parallel sprint](parallel-sprints.md) subagents).
+
 A gate must be **near-free**, or agents route around it ([pain P2](../research/vibin-painpoints.md)).
 **Scoping is what keeps it free**: the capture gate watches only product-code dirs, so config and card
 edits never trigger it — false nudges are how a gate loses its authority.

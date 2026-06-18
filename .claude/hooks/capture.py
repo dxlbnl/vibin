@@ -25,6 +25,7 @@ harness caches hook config per session, and a missing script hard-blocks every t
 """
 import json
 import os
+import subprocess
 import sys
 
 WRITE_TOOLS = {"Write", "Edit", "NotebookEdit"}
@@ -35,6 +36,22 @@ CODE_DIRS = ("src",)
 
 def proj_dir(data):
     return os.environ.get("CLAUDE_PROJECT_DIR") or data.get("cwd") or os.getcwd()
+
+
+def worktree_knowledge_dirs(proj):
+    """Return wiki/knowledge/ paths for all active git worktrees."""
+    try:
+        result = subprocess.run(
+            ["git", "worktree", "list", "--porcelain"],
+            capture_output=True, text=True, timeout=5, cwd=proj,
+        )
+        roots = []
+        for line in result.stdout.splitlines():
+            if line.startswith("worktree "):
+                roots.append(line[9:])
+        return [os.path.join(r, "wiki", "knowledge") for r in roots]
+    except Exception:
+        return []
 
 
 def tool_target(name, ti):
@@ -93,7 +110,8 @@ def main():
         if not target:
             sys.exit(0)
         target_abs = target if os.path.isabs(target) else os.path.join(proj, target)
-        if is_under(target_abs, know):
+        all_know = [know] + worktree_knowledge_dirs(proj)
+        if any(is_under(target_abs, k) for k in all_know):
             try:  # capture happened
                 os.remove(dirty)
             except OSError:
